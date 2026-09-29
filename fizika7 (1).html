@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fizika o'rganish tamoyillari</title>
+<style>
+:root{--bg:#fff8ec;--card:#fff;--tx:#2b2540;--mut:#6b6485;--c1:#ff7a59;--c2:#2bb0a0;--c3:#8b5cf6;--ok:#22a55b;--bad:#e5484d;--ln:#eadfcb;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1830;--card:#2a2444;--tx:#f3efff;--mut:#b8b0d6;--ln:#433b66}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:14px}
+h1{font-size:1.7rem;text-align:center;margin:8px 0 12px}
+h2{margin:0 0 6px;font-size:1.35rem}h3{margin:16px 0 6px;font-size:1.1rem}
+.tabs{display:flex;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
+.tab{flex:1;border:0;border-radius:14px;padding:10px 4px;font:inherit;font-weight:700;font-size:.85rem;color:#fff;opacity:.55;cursor:pointer}
+.tab.on{opacity:1;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.t0{background:var(--c1)}.t1{background:var(--c2)}.t2{background:var(--c3)}
+.card{background:var(--card);border:2px solid var(--ln);border-radius:18px;padding:14px;margin:12px 0}
+.sec{display:none}.sec.on{display:block}
+canvas{width:100%;height:auto;background:#eaf6ff;border-radius:14px;display:block}
+label{display:block;margin:6px 0;font-weight:600}
+input[type=range]{width:100%;height:28px}
+button.b{border:0;border-radius:12px;padding:10px 14px;font:inherit;font-weight:700;color:#fff;background:var(--c1);cursor:pointer;margin:4px 4px 4px 0}
+button.g{background:var(--c2)}button.p{background:var(--c3)}
+.steps{display:flex;gap:6px;flex-wrap:wrap}.st{flex:1;min-width:95px;padding:8px;border-radius:12px;background:var(--bg);border:2px dashed var(--ln);text-align:center;font-size:.85rem;font-weight:700}
+.st.on{border:2px solid var(--c1);background:#fff1e8;color:#2b2540}
+.tblw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border:1px solid var(--ln);padding:5px;text-align:center}
+.bub{padding:10px 12px;border-radius:16px;margin:8px 0;max-width:88%}
+.az{background:#dbeafe;color:#1e3a5f}.ma{background:#fce7f3;color:#5f1e40;margin-left:auto}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--ln);background:var(--card);color:var(--tx);border-radius:12px;padding:10px;margin:6px 0;font:inherit;cursor:pointer}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--bad);color:#fff;border-color:var(--bad)}
+.note{color:var(--mut);font-size:.9rem}.hl{background:#fff4c2;color:#3b3200;border-radius:12px;padding:10px;margin:8px 0}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fz{border:0;border-radius:16px;padding:14px 8px;font:inherit;font-weight:700;color:#fff;cursor:pointer}
+@media(max-width:420px){body{font-size:17px}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🔬 Fizikani o'rganish tamoyillari</h1>
+<div class="tabs">
+<button class="tab t0 on" data-t="0">🧪 Tadqiqot</button>
+<button class="tab t1" data-t="1">🤝 Hamkorlik</button>
+<button class="tab t2" data-t="2">🎯 Fazilatlar</button>
+</div>
+
+<!-- ============ 1-BO'LIM ============ -->
+<section class="sec on" id="s0">
+<div class="card"><h2>🧪 Tadqiqotchi va ijodiy yondashuv</h2>
+<p>Olim savol beradi, <b>gipoteza</b> (taxmin) qo'yadi, <b>tajriba</b> qiladi va <b>xulosa</b> chiqaradi. Yangi fikrlar ijodkorlikdan boshlanadi!</p></div>
+<div class="card"><div class="steps"><div class="st on" id="st0">1️⃣ Gipoteza</div><div class="st" id="st1">2️⃣ Tajriba</div><div class="st" id="st2">3️⃣ Xulosa</div></div>
+<h3>Savol: massa mayatnik davriga ta'sir qiladimi?</h3>
+<button class="b p" onclick="hyp('ha')">Ha, ta'sir qiladi</button><button class="b p" onclick="hyp('yoq')">Yo'q, ta'sir qilmaydi</button>
+<div id="hypTx" class="note"></div></div>
+<div class="card"><canvas id="cv0" width="360" height="250"></canvas>
+<label>Ip uzunligi: <span id="vL">1.0</span> m<input type="range" id="rL" min="0.2" max="2" step="0.1" value="1"></label>
+<label>Yuk massasi: <span id="vM">1.0</span> kg<input type="range" id="rM" min="0.1" max="2" step="0.1" value="1"></label>
+<label>Boshlang'ich burchak: <span id="vA">30</span>°<input type="range" id="rA" min="5" max="60" step="1" value="30"></label>
+<p>⏱ Davr T = <b id="tT">-</b> s &nbsp; (o'lchangan: <b id="tM">-</b> s)</p>
+<button class="b g" onclick="addRow()">➕ Jadvalga qo'shish</button><button class="b" onclick="concl()">📝 Xulosa chiqarish</button>
+<div class="tblw"><table><thead><tr><th>L (m)</th><th>m (kg)</th><th>Burchak</th><th>T (s)</th></tr></thead><tbody id="tb"></tbody></table></div>
+<div id="conc" class="hl" style="display:none"></div></div>
+<div class="card"><h3>💭 O'ylab ko'r</h3><ul><li>Faqat massani o'zgartirsang, T o'zgaradimi?</li><li>Ipni 4 marta uzunroq qilsang, T necha marta ortadi?</li><li>Nega bitta o'lchovga ishonib bo'lmaydi?</li></ul></div>
+<div class="card"><h3>✅ Mustahkamlash</h3><div id="q0"></div></div>
+</section>
+
+<!-- ============ 2-BO'LIM ============ -->
+<section class="sec" id="s1">
+<div class="card"><h2>🤝 Hamkorlik, erkin fikrlash va skeptik qarash</h2>
+<p><b>Skeptik</b> — hamma narsaga darhol ishonmay, "Isboti bormi?" deb so'raydigan odam. Do'stlar bilan muhokama qilsak, haqiqatga tezroq yetamiz.</p></div>
+<div class="card"><div id="dlg"></div><button class="b g" id="dnx" onclick="nextD()">Keyingi ▶</button></div>
+<div class="card"><canvas id="cv1" width="360" height="260"></canvas>
+<button class="b" onclick="drop()">⬇️ Tushirish</button><button class="b p" id="airB" onclick="toggleAir()">💨 Havo qarshiligi: O'CHIQ</button>
+<div id="res" class="hl">Natija: tajriba boshlanmagan.</div></div>
+<div class="card"><h3>💭 O'ylab ko'r</h3><ul><li>Havo bo'lmasa, tosh va qog'oz nega birga tushdi?</li><li>Aziz noto'g'ri edimi? Nega u ham foydali fikr aytdi?</li><li>Do'stingning fikriga qo'shilmasang, qanday muloyim so'raysan?</li></ul></div>
+<div class="card"><h3>✅ Mustahkamlash</h3><div id="q1"></div></div>
+</section>
+
+<!-- ============ 3-BO'LIM ============ -->
+<section class="sec" id="s2">
+<div class="card"><h2>🎯 Qat'iyat, kamtarlik, rostgo'ylik, mas'uliyat</h2>
+<p>Har bir o'lchov ozgina xato bilan chiqadi. Shuning uchun ko'p marta o'lchab, <b>o'rtacha qiymat</b> olamiz.</p></div>
+<div class="card"><h3>📏 Aniq o'lchash o'yini</h3>
+<button class="b" onclick="meas('L')">📏 Qalam uzunligini o'lcha</button><button class="b g" onclick="meas('T')">⏱ Sekundomer bilan o'lcha</button>
+<div id="mres" class="hl">O'lchovlar hali yo'q.</div></div>
+<div class="card"><h3>🃏 Fazilat kartochkalari (bos!)</h3>
+<div class="cards">
+<button class="fz" style="background:#ef6c4d" onclick="scen(0)">💪 Qat'iyat</button>
+<button class="fz" style="background:#2bb0a0" onclick="scen(1)">🙏 Kamtarlik</button>
+<button class="fz" style="background:#8b5cf6" onclick="scen(2)">🗣 Rostgo'ylik</button>
+<button class="fz" style="background:#e6a100" onclick="scen(3)">🦺 Mas'uliyatlilik</button></div>
+<div id="scn" class="card" style="display:none"></div></div>
+<div class="card"><h3>💭 O'ylab ko'r</h3><ul><li>Nega o'rtacha qiymat bitta o'lchovdan ishonchliroq?</li><li>Natijang kutilganidan farq qilsa, nima qilasan?</li><li>Laboratoriyada qanday xavfsizlik qoidalari bor?</li></ul></div>
+<div class="card"><h3>✅ Mustahkamlash</h3><div id="q2"></div></div>
+</section>
+
+<!-- ============ XULOSA ============ -->
+<div class="card" style="border-color:var(--c2)"><h2>🌟 Umumiy xulosa</h2>
+<p>1) Taxmin qil, tajriba qil, xulosa chiqar. 2) Ishonishdan oldin tekshir, birgalikda muhokama qil. 3) Qat'iyatli, kamtar, rostgo'y va mas'uliyatli bo'l.</p>
+<button class="b p" onclick="resetAll()">🔄 Qayta boshlash</button></div>
+</div>
+
+<script>
+// ---------- Yordamchi ----------
+const $=id=>document.getElementById(id);
+const g=9.8;
+// Tablar
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  document.querySelectorAll('.sec').forEach((s,i)=>s.classList.toggle('on',i==b.dataset.t));
+});
+// ---------- Testlar (javob bergach darhol tekshiriladi) ----------
+const QZ=[
+ [["Mayatnik davri qaysi kattalikka bog'liq?",["Ip uzunligiga","Yuk massasiga","Rangiga"],0],
+  ["Tajribadan keyingi oxirgi bosqich qaysi?",["Gipoteza","Xulosa chiqarish","Savol berish"],1]],
+ [["Skeptik odam nima qiladi?",["Hammasiga ishonadi","Tekshirib ko'radi","Bahslashmaydi"],1],
+  ["Havosiz joyda tosh va patning tushishi qanday?",["Birga tushadi","Tosh oldin","Pat oldin"],0]],
+ [["Bir necha o'lchovdan nima olamiz?",["Eng kattasini","O'rtacha qiymatni","Eng kichigini"],1],
+  ["Natija kutilganidan farq qilsa nima qilamiz?",["O'zgartirib yozamiz","Rostini yozamiz","Yozmaymiz"],1]]];
+function quiz(i){
+  const box=$('q'+i);box.innerHTML='';
+  QZ[i].forEach(([q,o,a])=>{
+    const d=document.createElement('div');d.innerHTML='<b>'+q+'</b>';
+    const fb=document.createElement('div');fb.className='note';
+    o.forEach((t,k)=>{const b=document.createElement('button');b.className='opt';b.textContent=t;
+      b.onclick=()=>{ if(d.dataset.done)return;d.dataset.done=1;
+        b.classList.add(k==a?'ok':'no');if(k!=a)d.querySelectorAll('.opt')[a].classList.add('ok');
+        fb.textContent=k==a?'✅ To\'g\'ri!':'❌ Noto\'g\'ri. To\'g\'ri javob belgilandi.';};
+      d.appendChild(b);});
+    d.appendChild(fb);box.appendChild(d);});
+}
+// ---------- 1-BO'LIM: Mayatnik ----------
+const c0=$('cv0').getContext('2d');
+let hypo=null,rows=[],t0=0,lastCross=null,measT=null,prevTh=1;
+const Lv=()=>+$('rL').value,Mv=()=>+$('rM').value,Av=()=>+$('rA').value;
+const Tcalc=()=>2*Math.PI*Math.sqrt(Lv()/g); // T = 2π√(L/g)
+function setStep(n){for(let i=0;i<3;i++)$('st'+i).classList.toggle('on',i==n)}
+function hyp(h){hypo=h;setStep(1);$('hypTx').textContent='Gipoteza qabul qilindi: massa '+(h=='ha'?'ta\'sir qiladi':'ta\'sir qilmaydi')+'. Endi tajriba qil — kamida 3 o\'lchov qo\'sh.';}
+['rL','rM','rA'].forEach(id=>$(id).oninput=()=>{$('vL').textContent=Lv().toFixed(1);$('vM').textContent=Mv().toFixed(1);$('vA').textContent=Av();t0=performance.now();lastCross=null;measT=null;prevTh=1;});
+function addRow(){
+  const T=(measT||Tcalc()).toFixed(2);
+  rows.push([Lv(),Mv(),Av(),T]);
+  $('tb').innerHTML+='<tr><td>'+Lv().toFixed(1)+'</td><td>'+Mv().toFixed(1)+'</td><td>'+Av()+'°</td><td>'+T+'</td></tr>';
+  if(hypo)setStep(1);
+}
+function concl(){
+  const d=$('conc');d.style.display='block';
+  if(rows.length<3){d.textContent='Avval kamida 3 ta o\'lchov qo\'sh. Massani va uzunlikni alohida o\'zgartirib ko\'r!';return;}
+  setStep(2);
+  d.innerHTML='<b>Xulosa:</b> massa o\'zgarganda T deyarli o\'zgarmaydi, ip uzunligi ortsa T ortadi. '+
+   (hypo=='yoq'?'🎉 Sening gipotezang to\'g\'ri chiqdi!':hypo=='ha'?'Gipotezang tasdiqlanmadi — bu ham ilmiy natija!':'Keyingi safar gipoteza ham qo\'y.');
+}
+function drawPend(now){
+  const t=(now-t0)/1000,T=Tcalc(),th0=Av()*Math.PI/180,th=th0*Math.cos(2*Math.PI*t/T);
+  // o'lchangan davr: teskari yo'nalishdan o'tish momentlari
+  if(prevTh<0&&th>=0){if(lastCross!==null)measT=(now-lastCross)/1000;lastCross=now;}
+  prevTh=th;
+  $('tT').textContent=T.toFixed(2);$('tM').textContent=measT?measT.toFixed(2):'...';
+  const W=360,px=110,x0=180,y0=20,bx=x0+Lv()*px*Math.sin(th),by=y0+Lv()*px*Math.cos(th);
+  c0.clearRect(0,0,W,250);c0.fillStyle='#8b5cf6';c0.fillRect(120,10,120,10);
+  c0.strokeStyle='#444';c0.lineWidth=2;c0.beginPath();c0.moveTo(x0,y0);c0.lineTo(bx,by);c0.stroke();
+  c0.fillStyle='#ff7a59';c0.beginPath();c0.arc(bx,by,8+Mv()*6,0,7);c0.fill();
+}
+// ---------- 2-BO'LIM: Dialog va tushish ----------
+const DL=[["az","🧒 Aziz: Og'ir jism tezroq tushadi, bu aniq!"],["ma","👧 Malika: Aniqmi? Buni qayerdan bilasan? Tekshirib ko'raylikmi?"],["az","🧒 Aziz: Yaxshi, tosh va qog'oz to'pini tashlaymiz!"],["ma","👧 Malika: Ajoyib! Havo qarshiligini yoqib ham, o'chirib ham ko'ramiz."]];
+let di=0;
+function nextD(){if(di<DL.length){const b=document.createElement('div');b.className='bub '+DL[di][0];b.textContent=DL[di][1];$('dlg').appendChild(b);di++;}
+  if(di>=DL.length)$('dnx').style.display='none';}
+const c1=$('cv1').getContext('2d');
+let air=false,fall=null; // fall: {t, o:[{y,v,t}]}
+const K={rock:0.1,paper:1.2}; // qarshilik koeffitsiyenti
+const H=20; // balandlik, m
+function toggleAir(){air=!air;$('airB').textContent="💨 Havo qarshiligi: "+(air?"YOQIQ":"O'CHIQ");}
+function drop(){fall={o:[{y:0,v:0,t:null,k:K.rock},{y:0,v:0,t:null,k:K.paper}],t:0,air:air,last:performance.now()};$('res').textContent='Tushmoqda...';}
+function drawFall(now){
+  if(fall){const dt=Math.min((now-fall.last)/1000,.05);fall.last=now;
+    if(!fall.done){fall.t+=dt;
+      fall.o.forEach(o=>{if(o.t===null){const k=fall.air?o.k:0;o.v+=(g-k*o.v)*dt;o.y+=o.v*dt;if(o.y>=H){o.y=H;o.t=fall.t;}}});
+      if(fall.o.every(o=>o.t!==null)){fall.done=1;const[a,b]=fall.o;
+        $('res').innerHTML='Havo qarshiligi '+(fall.air?'yoqiq':'o\'chiq')+': tosh <b>'+a.t.toFixed(2)+' s</b>, qog\'oz to\'pi <b>'+b.t.toFixed(2)+' s</b>. '+
+        (fall.air?'Havo qarshiligi yengil jismni sekinlatdi!':'Ikkalasi bir vaqtda tushdi — massa ahamiyatsiz!');}}}
+  c1.clearRect(0,0,360,260);c1.fillStyle='#b7e4a5';c1.fillRect(0,245,360,15);
+  c1.fillStyle='#555';c1.font='14px sans-serif';c1.fillText('Tosh',100,16);c1.fillText('Qog\'oz',215,16);
+  [[120,'#777',12],[240,'#f7a8c4',12]].forEach(([x,col,r],i)=>{
+    const y=25+(fall?fall.o[i].y:0)*10.5;c1.fillStyle=col;c1.beginPath();c1.arc(x,y,r,0,7);c1.fill();});
+}
+// ---------- 3-BO'LIM: O'lchash ----------
+const M={L:[],T:[]},TR={L:15,T:2},SP={L:.5,T:.3};
+function meas(k){
+  M[k].push(TR[k]+(Math.random()*2-1)*SP[k]);draw3();}
+function draw3(){
+  let h='';[['L','📏 Uzunlik','sm'],['T','⏱ Vaqt','s']].forEach(([k,n,u])=>{
+    const a=M[k];if(!a.length)return;u=k=='L'?'sm':'s';
+    h+='<p><b>'+n+':</b> '+a.map(v=>v.toFixed(2)).join('; ')+' '+u+'<br>O\'rtacha: <b>'+(a.reduce((s,v)=>s+v,0)/a.length).toFixed(2)+' '+u+'</b> ('+a.length+' ta o\'lchov)</p>';});
+  $('mres').innerHTML=h||"O'lchovlar hali yo'q.";
+}
+const SC=[
+ ["💪 Qat'iyat","Birinchi o'lchoving boshqalardan ancha farq qildi. Sen nima qilarding?",[["Tashlab qo'yardim",0],["Yana bir necha marta o'lchardim",1],["Eng chiroyli natijani tanlardim",0]],"Takroriy o'lchash ishonchli natija beradi."],
+ ["🙏 Kamtarlik","Chizg'ichni noto'g'ri qo'yganingni payqading. Sen nima qilarding?",[["Hech kimga aytmasdim",0],["Xatoni tan olib, qayta o'lchardim",1],["Do'stimni ayblardim",0]],"Xatoni tan olish olimni kuchli qiladi."],
+ ["🗣 Rostgo'ylik","Natija kutganingdek chiqmadi. Sen nima qilarding?",[["O'zgartirib yozardim",0],["Qanday bo'lsa, shunday yozardim",1],["Do'stimdan ko'chirardim",0]],"Kutilmagan natija ko'pincha yangi kashfiyotga olib boradi."],
+ ["🦺 Mas'uliyatlilik","Laboratoriyada shisha asbob sindi. Sen nima qilarding?",[["Yashirardim",0],["O'qituvchiga darhol aytardim",1],["Qo'lim bilan yig'ardim",0]],"Xavfsizlik birinchi o'rinda: darhol xabar ber."]];
+function scen(i){
+  const s=SC[i],d=$('scn');d.style.display='block';
+  d.innerHTML='<h3>'+s[0]+'</h3><p>'+s[1]+'</p><b>Sen nima qilarding?</b>';
+  const fb=document.createElement('div');
+  s[2].forEach(([t,ok])=>{const b=document.createElement('button');b.className='opt';b.textContent=t;
+    b.onclick=()=>{b.classList.add(ok?'ok':'no');fb.innerHTML=ok?'✅ To\'g\'ri! '+s[3]:'❌ Yana o\'ylab ko\'r. To\'g\'ri yo\'l boshqa.';};d.appendChild(b);});
+  d.appendChild(fb);
+}
+// ---------- Qayta boshlash ----------
+function resetAll(){
+  hypo=null;rows=[];$('tb').innerHTML='';$('conc').style.display='none';$('hypTx').textContent='';setStep(0);
+  $('rL').value=1;$('rM').value=1;$('rA').value=30;$('rL').oninput();
+  di=0;$('dlg').innerHTML='';$('dnx').style.display='';air=false;$('airB').textContent="💨 Havo qarshiligi: O'CHIQ";fall=null;$('res').textContent='Natija: tajriba boshlanmagan.';
+  M.L=[];M.T=[];draw3();$('scn').style.display='none';
+  [0,1,2].forEach(quiz);
+  document.querySelector('.tab.t0').click();scrollTo(0,0);
+}
+// ---------- Asosiy sikl ----------
+function loop(now){drawPend(now);drawFall(now);requestAnimationFrame(loop);}
+[0,1,2].forEach(quiz);nextD();requestAnimationFrame(loop);
+/* O'QITUVCHI UCHUN TAVSIYA:
+   1) 1-bo'limda o'quvchilar juft bo'lib ishlasin: avval gipoteza yozdirib, keyin faqat BITTA parametrni o'zgartirib jadval to'ldirtiring.
+   2) 2-bo'limda dialogni sinfda rollarga bo'lib o'qitib, havo qarshiligi yoqilishidan oldin natijani taxmin qildiring.
+   3) 3-bo'limda har bir o'quvchi 5 ta o'lchov olib o'rtachani daftariga yozsin; kartochkalarni guruhlarda muhokama qildiring.
+   4) Dars oxirida "Qayta boshlash" tugmasi bilan navbatdagi guruhga sahifani tayyorlang. */
+</script>
+</body>
+</html>

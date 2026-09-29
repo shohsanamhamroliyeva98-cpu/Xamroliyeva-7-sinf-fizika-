@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fizika fani nimani o'rganadi?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    --paper:#FFF9EF;
+    --paper-2:#FFF2DE;
+    --ink:#1B1B2F;
+    --ink-soft:#4A4A63;
+    --mech:#FF6B35;
+    --mech-dark:#C4491B;
+    --mech-bg:#FFEADD;
+    --mol:#06A77D;
+    --mol-dark:#04735A;
+    --mol-bg:#DFF6EE;
+    --hot:#E63950;
+    --cold:#3E7FD9;
+    --therm-bg:#FDE9E1;
+    --yellow:#FFC145;
+    --line:#E7DFCF;
+    --card-shadow: 6px 6px 0 rgba(27,27,47,0.08);
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%;}
+  body{
+    margin:0;
+    min-height:100%;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Nunito', system-ui, -apple-system, sans-serif;
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Baloo 2', 'Nunito', system-ui, sans-serif;
+    margin:0 0 .4em 0;
+    color:var(--ink);
+    font-weight:700;
+  }
+  img,svg{max-width:100%;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(circle at 18% 25%, rgba(255,193,69,.35), transparent 45%),
+      radial-gradient(circle at 82% 70%, rgba(6,167,125,.25), transparent 45%),
+      var(--ink);
+    color:#FFF9EF;
+    padding:56px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{position:relative; z-index:2;}
+  .hero .kicker{
+    font-family:'Baloo 2';
+    font-size:.95rem;
+    color:var(--yellow);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    color:#fff;
+    font-size:clamp(1.9rem, 6vw, 2.7rem);
+    line-height:1.15;
+    max-width:11ch;
+  }
+  .hero p{
+    color:#D8D6E8;
+    max-width:46ch;
+    font-size:1.05rem;
+  }
+  #heroCanvas{
+    display:block;
+    width:100%;
+    height:150px;
+    margin-top:24px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.04);
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.topic{
+    padding:52px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .topic-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .topic-badge{
+    flex:0 0 auto;
+    width:46px; height:46px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem;
+    color:#fff;
+  }
+  .mech .topic-badge{background:var(--mech);}
+  .mol .topic-badge{background:var(--mol);}
+  .therm .topic-badge{background:var(--hot);}
+
+  .topic h2{font-size:1.5rem;}
+
+  .question-bubble{
+    display:inline-block;
+    font-family:'Baloo 2';
+    font-weight:600;
+    font-size:1.05rem;
+    padding:10px 16px;
+    border-radius:14px 14px 14px 2px;
+    margin:14px 0 18px;
+  }
+  .mech .question-bubble{background:var(--mech-bg); color:var(--mech-dark);}
+  .mol .question-bubble{background:var(--mol-bg); color:var(--mol-dark);}
+  .therm .question-bubble{background:var(--therm-bg); color:var(--hot);}
+
+  .theory{color:var(--ink-soft); margin-bottom:22px;}
+  .theory b{color:var(--ink); font-weight:800;}
+
+  /* ---------- SIM CARD ---------- */
+  .sim-card{
+    border-radius:20px;
+    padding:18px 18px 22px;
+    box-shadow:var(--card-shadow);
+    border:2px solid var(--ink);
+    margin-bottom:22px;
+  }
+  .mech .sim-card{background:var(--mech-bg); box-shadow:6px 6px 0 var(--mech-dark);}
+  .mol .sim-card{background:var(--mol-bg); box-shadow:6px 6px 0 var(--mol-dark);}
+  .therm .sim-card{background:var(--therm-bg); box-shadow:6px 6px 0 var(--hot);}
+
+  .sim-card canvas{
+    width:100%;
+    display:block;
+    border-radius:12px;
+    background:#FFFFFF;
+    touch-action:none;
+  }
+  .sim-controls{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px 16px;
+    margin-top:14px;
+  }
+  .sim-controls label{
+    font-family:'Baloo 2';
+    font-weight:600;
+    font-size:.92rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  input[type=range]{
+    -webkit-appearance:none;
+    width:140px;
+    height:6px;
+    border-radius:4px;
+    background:rgba(27,27,47,.18);
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--ink);
+    border:3px solid #fff;
+    cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--ink);
+    border:3px solid #fff;
+    cursor:pointer;
+  }
+  .btn{
+    font-family:'Baloo 2';
+    font-weight:600;
+    font-size:.92rem;
+    border:2px solid var(--ink);
+    background:#fff;
+    color:var(--ink);
+    padding:8px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .08s ease;
+  }
+  .btn:active{transform:translateY(2px);}
+  .btn.primary{background:var(--ink); color:#FFF9EF;}
+  .btn.on{background:var(--yellow); border-color:var(--ink);}
+  .readout{
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:.92rem;
+    margin-left:auto;
+    background:#fff;
+    padding:6px 12px;
+    border-radius:8px;
+    border:2px solid var(--ink);
+  }
+
+  /* ---------- EXAMPLES ---------- */
+  .examples{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:12px;
+  }
+  .example{
+    background:var(--paper-2);
+    border-radius:14px;
+    padding:14px 16px;
+    border:1.5px solid var(--line);
+    font-size:.95rem;
+  }
+  .example .em{font-size:1.4rem; display:block; margin-bottom:6px;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz{
+    padding:52px 0 70px;
+    background:var(--ink);
+    color:#FFF9EF;
+  }
+  .quiz .wrap > .qhead{margin-bottom:26px;}
+  .quiz h2{color:#fff; font-size:1.6rem;}
+  .quiz p.sub{color:#C9C7DA; margin-top:6px;}
+  .qcard{
+    background:#26263C;
+    border-radius:16px;
+    padding:18px 18px 16px;
+    margin-bottom:16px;
+  }
+  .qcard .qtext{
+    font-family:'Baloo 2';
+    font-weight:600;
+    font-size:1.02rem;
+    margin-bottom:12px;
+    color:#FFF9EF;
+  }
+  .opts{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    text-align:left;
+    background:#33334F;
+    color:#EDEBF7;
+    border:2px solid transparent;
+    border-radius:10px;
+    padding:10px 14px;
+    font-family:'Nunito';
+    font-size:.96rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .opt:hover:not(:disabled){border-color:var(--yellow);}
+  .opt.correct{background:#0F5C43; border-color:#3ED598; color:#fff;}
+  .opt.wrong{background:#6E2436; border-color:#FF6B7E; color:#fff;}
+  .opt:disabled{cursor:default; opacity:.85;}
+  .score{
+    text-align:center;
+    font-family:'Baloo 2';
+    font-size:1.1rem;
+    margin-top:22px;
+    color:var(--yellow);
+  }
+
+  footer{
+    text-align:center;
+    padding:26px 20px calc(26px + env(safe-area-inset-bottom,0px));
+    color:var(--ink-soft);
+    font-size:.85rem;
+    background:var(--paper);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * { animation-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">7-SINF · FIZIKA</div>
+    <h1>Fizika fani nimani o'rganadi?</h1>
+    <p>Atrofimizda har kuni sodir bo'ladigan voqealarning sirini ochamiz: nega to'p sakraydi, nega choy soviydi, nega hid xonaga tarqaladi. Har bir bo'limni o'zing boshqarib ko'r!</p>
+    <canvas id="heroCanvas"></canvas>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ BO'LIM 1: MEXANIKA ============ -->
+  <section class="topic mech">
+    <div class="wrap">
+      <div class="topic-head">
+        <div class="topic-badge">🏎️</div>
+        <h2>Mexanik hodisalar</h2>
+      </div>
+      <div class="question-bubble">Nega mashina tezlashadi yoki to'xtaydi?</div>
+      <p class="theory">Jismning vaqt o'tishi bilan o'rnini o'zgartirishi <b>mexanik harakat</b> deyiladi. Harakat qanchalik tez borayotganini <b>tezlik</b> ko'rsatadi. Jismni tezlatish, sekinlatish yoki yo'nalishini o'zgartirish uchun unga <b>kuch</b> ta'sir etishi kerak — kuch bo'lmasa, harakat ham o'zgarmaydi.</p>
+
+      <div class="sim-card">
+        <canvas id="mechCanvas" width="640" height="200"></canvas>
+        <div class="sim-controls">
+          <label>🚗 Tezlik
+            <input type="range" id="mechSpeed" min="1" max="10" value="4" step="1">
+          </label>
+          <button class="btn primary" id="mechPush">⚡ Kuch bilan itarish</button>
+          <span class="readout" id="mechReadout">4 birlik/s</span>
+        </div>
+      </div>
+
+      <div class="examples">
+        <div class="example"><span class="em">🚙</span>Mashina yo'lda tezlashganda va tormoz bosilganda kuch ta'sirini his qilasiz.</div>
+        <div class="example"><span class="em">⚽</span>To'pni tepganingizda u kuch ta'sirida tezlanadi va havoda uchadi.</div>
+        <div class="example"><span class="em">🚲</span>Velosipedni tez haydash uchun oyoq bilan ko'proq kuch berishingiz kerak.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BO'LIM 2: MOLEKULYAR ============ -->
+  <section class="topic mol">
+    <div class="wrap">
+      <div class="topic-head">
+        <div class="topic-badge">💧</div>
+        <h2>Molekulyar fizik hodisalar</h2>
+      </div>
+      <div class="question-bubble">Nega muz qattiq-yu, suv oquvchan, bug' esa tarqaladi?</div>
+      <p class="theory">Har qanday modda ko'zga ko'rinmas mayda zarrachalar — <b>molekulalardan</b> tuzilgan. Qattiq jismda molekulalar bir-biriga zich yopishib, faqat titraydi. Suyuqlikda ular erkinroq siljiydi. Gazda esa juda tez va tartibsiz harakatlanadi. Harorat oshganda molekulalar tezroq harakatlanadi!</p>
+
+      <div class="sim-card">
+        <canvas id="molCanvas" width="640" height="220"></canvas>
+        <div class="sim-controls">
+          <button class="btn on" id="stateSolid" data-state="solid">🧊 Qattiq</button>
+          <button class="btn" id="stateLiquid" data-state="liquid">💧 Suyuq</button>
+          <button class="btn" id="stateGas" data-state="gas">💨 Gaz</button>
+          <label>🌡️ Harorat
+            <input type="range" id="molTemp" min="1" max="10" value="3">
+          </label>
+        </div>
+      </div>
+
+      <div class="examples">
+        <div class="example"><span class="em">🌸</span>Gul hidi butun xonaga tarqaladi — bu hid molekulalarining havoda diffuziyasi.</div>
+        <div class="example"><span class="em">🍵</span>Choyga solingan shakar asta-sekin erib, butun stakanga tarqaladi.</div>
+        <div class="example"><span class="em">👃</span>Ovqat pishayotganda hidi butun uyga tarqalib, boshqa xonadan ham sezasiz.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BO'LIM 3: TERMODINAMIK ============ -->
+  <section class="topic therm">
+    <div class="wrap">
+      <div class="topic-head">
+        <div class="topic-badge">🔥</div>
+        <h2>Termodinamik hodisalar</h2>
+      </div>
+      <div class="question-bubble">Nega issiq choy stakanini ushlasangiz, qo'lingiz isiydi?</div>
+      <p class="theory">Jismning qanchalik issiq yoki sovuqligini <b>harorat</b> ko'rsatadi. Issiq jism sovuq jismga tegib tursa, <b>issiqlik</b> har doim issiqdan sovuqqa o'tadi — ular haroratlari tenglashguncha. Bu jarayonda energiya bir joydan ikkinchisiga almashadi.</p>
+
+      <div class="sim-card">
+        <canvas id="thermCanvas" width="640" height="220"></canvas>
+        <div class="sim-controls">
+          <button class="btn primary" id="thermStart">🔗 Bir-biriga tekkizish</button>
+          <button class="btn" id="thermReset">↺ Qaytadan boshlash</button>
+          <span class="readout" id="thermReadout">Issiq: 90° · Sovuq: 10°</span>
+        </div>
+      </div>
+
+      <div class="examples">
+        <div class="example"><span class="em">☕</span>Stoldagi issiq choy asta-sekin sovuq havoga issiqlik berib, soviydi.</div>
+        <div class="example"><span class="em">🧊</span>Muz stakandagi suyuqlikdan issiqlik olib, erib ketadi.</div>
+        <div class="example"><span class="em">🥶</span>Sovuq qo'lni issiq suvga tiqsangiz, issiqlik suvdan qo'lga o'tib, isiydi.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEST ============ -->
+  <section class="quiz" id="quiz">
+    <div class="wrap">
+      <div class="qhead">
+        <h2>Bilimingni tekshir! 🧠</h2>
+        <p class="sub">Har bir savolga javob tanla — natija darhol ko'rinadi.</p>
+      </div>
+      <div id="quizList"></div>
+      <div class="score" id="scoreBox"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>7-sinf fizika · Interaktiv dars sahifasi</footer>
+
+<script>
+/* =====================================================
+   UMUMIY YORDAMCHI
+===================================================== */
+function fitCanvas(canvas){
+  const ratio = canvas.height / canvas.width;
+  function resize(){
+    const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.style.height = (w*ratio) + 'px';
+  }
+  window.addEventListener('resize', resize);
+  resize();
+}
+
+/* =====================================================
+   HERO — sodda zarralar animatsiyasi
+===================================================== */
+(function(){
+  const c = document.getElementById('heroCanvas');
+  const ctx = c.getContext('2d');
+  function setup(){
+    c.width = c.clientWidth * (window.devicePixelRatio||1);
+    c.height = c.clientHeight * (window.devicePixelRatio||1);
+  }
+  setup();
+  window.addEventListener('resize', setup);
+  const colors = ['#FF6B35','#06A77D','#FFC145','#E63950','#3E7FD9'];
+  let pts = Array.from({length:26}, ()=>({
+    x: Math.random(), y: Math.random(),
+    vx:(Math.random()-.5)*0.0025, vy:(Math.random()-.5)*0.0025,
+    r: 2+Math.random()*3.2,
+    col: colors[Math.floor(Math.random()*colors.length)]
+  }));
+  function tick(){
+    const W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>1) p.vx*=-1;
+      if(p.y<0||p.y>1) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x*W,p.y*H,p.r*(window.devicePixelRatio||1),0,7);
+      ctx.fillStyle=p.col;
+      ctx.globalAlpha=0.85;
+      ctx.fill();
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* =====================================================
+   BO'LIM 1 — MEXANIKA: sirpanuvchi mashina
+===================================================== */
+(function(){
+  const canvas = document.getElementById('mechCanvas');
+  fitCanvas(canvas);
+  const ctx = canvas.getContext('2d');
+  const speedSlider = document.getElementById('mechSpeed');
+  const readout = document.getElementById('mechReadout');
+  const pushBtn = document.getElementById('mechPush');
+
+  let x = 40, dir = 1, boost = 0;
+
+  function baseSpeed(){ return parseInt(speedSlider.value,10); }
+  speedSlider.addEventListener('input', ()=>{
+    readout.textContent = baseSpeed() + ' birlik/s';
+  });
+  pushBtn.addEventListener('click', ()=>{ boost = 14; });
+
+  function draw(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    // yo'l
+    ctx.fillStyle = '#F3E7D6';
+    ctx.fillRect(0, H-46, W, 46);
+    ctx.strokeStyle = '#fff';
+    ctx.setLineDash([16,14]);
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(0, H-23); ctx.lineTo(W, H-23);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // harakat
+    let v = (baseSpeed()*1.1) + boost;
+    x += dir*v*0.6;
+    if(boost>0) boost -= 0.35;
+    if(boost<0) boost = 0;
+    if(x > W-70){ x = W-70; dir=-1; }
+    if(x < 20){ x = 20; dir=1; }
+
+    // mashina
+    ctx.save();
+    ctx.translate(x, H-70);
+    if(dir<0){ ctx.scale(-1,1); }
+    ctx.fillStyle = '#FF6B35';
+    roundRect(ctx, 0, 10, 60, 26, 8); ctx.fill();
+    ctx.fillStyle = '#C4491B';
+    roundRect(ctx, 12, -6, 34, 22, 8); ctx.fill();
+    ctx.fillStyle = '#DFF3FF';
+    roundRect(ctx, 16, -2, 26, 14, 4); ctx.fill();
+    ctx.fillStyle = '#1B1B2F';
+    ctx.beginPath(); ctx.arc(12,38,8,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(48,38,8,0,7); ctx.fill();
+    ctx.restore();
+
+    // kuch effekti
+    if(boost>0.5){
+      ctx.fillStyle = 'rgba(255,193,69,'+(boost/14)+')';
+      ctx.beginPath();
+      ctx.moveTo(x - dir*8, H-58);
+      ctx.lineTo(x - dir*28, H-64);
+      ctx.lineTo(x - dir*28, H-52);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+/* =====================================================
+   BO'LIM 2 — MOLEKULYAR HOLATLAR
+===================================================== */
+(function(){
+  const canvas = document.getElementById('molCanvas');
+  fitCanvas(canvas);
+  const ctx = canvas.getContext('2d');
+  const tempSlider = document.getElementById('molTemp');
+  const btns = {
+    solid: document.getElementById('stateSolid'),
+    liquid: document.getElementById('stateLiquid'),
+    gas: document.getElementById('stateGas')
+  };
+  let state = 'solid';
+  const N = 42;
+  let particles = [];
+
+  function setState(s){
+    state = s;
+    Object.entries(btns).forEach(([k,b])=> b.classList.toggle('on', k===s));
+    initParticles();
+  }
+  Object.entries(btns).forEach(([k,b])=> b.addEventListener('click', ()=>setState(k)));
+
+  function initParticles(){
+    particles = [];
+    const cols = 7, rows = 6;
+    for(let i=0;i<N;i++){
+      let baseX, baseY;
+      if(state==='gas'){
+        baseX = Math.random(); baseY = Math.random();
+      } else {
+        const c = i % cols, r = Math.floor(i/cols)%rows;
+        baseX = 0.09 + c*(0.82/(cols-1));
+        baseY = 0.12 + r*(0.78/(rows-1));
+      }
+      particles.push({
+        bx: baseX, by: baseY,
+        x: baseX, y: baseY,
+        vx: (Math.random()-.5)*0.002,
+        vy: (Math.random()-.5)*0.002,
+        phase: Math.random()*Math.PI*2
+      });
+    }
+  }
+  initParticles();
+
+  function temp(){ return parseInt(tempSlider.value,10); }
+
+  function step(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    // konteyner
+    ctx.strokeStyle = '#B9D9CC';
+    ctx.lineWidth = 3;
+    roundRect(ctx, 8,8, W-16, H-16, 14);
+    ctx.stroke();
+
+    const t = temp();
+    const speedFactor = 0.5 + t*0.55;
+
+    particles.forEach(p=>{
+      if(state==='solid'){
+        p.phase += 0.15*speedFactor;
+        p.x = p.bx + Math.sin(p.phase)*0.004*speedFactor;
+        p.y = p.by + Math.cos(p.phase*1.3)*0.004*speedFactor;
+      } else if(state==='liquid'){
+        p.x += p.vx*speedFactor;
+        p.y += p.vy*speedFactor;
+        p.vx += (Math.random()-.5)*0.0015*speedFactor;
+        p.vy += (Math.random()-.5)*0.0015*speedFactor;
+        p.vx = Math.max(-0.004,Math.min(0.004,p.vx));
+        p.vy = Math.max(-0.004,Math.min(0.004,p.vy));
+        // konteyner ichida saqlash
+        if(p.x<0.06){p.x=0.06; p.vx*=-1;}
+        if(p.x>0.94){p.x=0.94; p.vx*=-1;}
+        if(p.y<0.08){p.y=0.08; p.vy*=-1;}
+        if(p.y>0.92){p.y=0.92; p.vy*=-1;}
+      } else { // gas
+        p.x += p.vx*speedFactor*2.2;
+        p.y += p.vy*speedFactor*2.2;
+        if(p.vx===0) p.vx = (Math.random()-.5)*0.004;
+        if(p.vy===0) p.vy = (Math.random()-.5)*0.004;
+        if(p.x<0.03||p.x>0.97) p.vx*=-1;
+        if(p.y<0.05||p.y>0.95) p.vy*=-1;
+        p.x = Math.max(0.03,Math.min(0.97,p.x));
+        p.y = Math.max(0.05,Math.min(0.95,p.y));
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x*W, p.y*H, 6.2, 0, 7);
+      ctx.fillStyle = state==='gas' ? '#06A77D' : (state==='liquid' ? '#0E8F72' : '#04735A');
+      ctx.globalAlpha = 0.9;
+      ctx.fill();
+    });
+
+    // gas uchun tezlik ta'minlash (vx/vy random.init bo'lmagani uchun)
+    requestAnimationFrame(step);
+  }
+  // gaz zarralariga boshlang'ich tezlik berish
+  particles.forEach(p=>{ if(p.vx===0) p.vx=0.002; if(p.vy===0) p.vy=0.002; });
+  step();
+})();
+
+/* =====================================================
+   BO'LIM 3 — TERMODINAMIKA: issiqlik almashinuvi
+===================================================== */
+(function(){
+  const canvas = document.getElementById('thermCanvas');
+  fitCanvas(canvas);
+  const ctx = canvas.getContext('2d');
+  const startBtn = document.getElementById('thermStart');
+  const resetBtn = document.getElementById('thermReset');
+  const readout = document.getElementById('thermReadout');
+
+  let hotT = 90, coldT = 10;
+  let touching = false;
+  let done = false;
+
+  function reset(){
+    hotT = 90; coldT = 10; touching = false; done = false;
+    startBtn.disabled = false;
+    updateReadout();
+  }
+  function updateReadout(){
+    readout.textContent = 'Issiq: '+Math.round(hotT)+'° · Sovuq: '+Math.round(coldT)+'°';
+  }
+  startBtn.addEventListener('click', ()=>{ touching = true; startBtn.disabled = true; });
+  resetBtn.addEventListener('click', reset);
+
+  function tempColor(t){
+    // 10 (ko'k) -> 90 (qizil)
+    const ratio = (t-10)/80;
+    const r = Math.round(62 + ratio*(230-62));
+    const g = Math.round(127 + ratio*(57-127));
+    const b = Math.round(217 + ratio*(80-217));
+    return `rgb(${r},${g},${b})`;
+  }
+
+  let particlesHot = Array.from({length:16}, ()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.01,vy:(Math.random()-.5)*.01}));
+  let particlesCold = Array.from({length:16}, ()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.01,vy:(Math.random()-.5)*.01}));
+
+  function moveGroup(list, t){
+    const f = 0.3 + (t/90)*1.6;
+    list.forEach(p=>{
+      p.x += p.vx*f; p.y += p.vy*f;
+      if(p.x<0.05||p.x>0.95) p.vx*=-1;
+      if(p.y<0.08||p.y>0.92) p.vy*=-1;
+      p.x = Math.max(0.05,Math.min(0.95,p.x));
+      p.y = Math.max(0.08,Math.min(0.92,p.y));
+    });
+  }
+
+  function draw(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    if(touching && !done){
+      const diff = hotT - coldT;
+      if(diff > 0.5){
+        const flow = diff*0.01;
+        hotT -= flow;
+        coldT += flow;
+      } else {
+        done = true;
+      }
+      updateReadout();
+    }
+
+    const blockW = W*0.36, blockH = H*0.62, gap = touching ? 4 : 26;
+    const y0 = H*0.16;
+    const hotX = W/2 - blockW - gap/2;
+    const coldX = W/2 + gap/2;
+
+    // issiq blok
+    ctx.fillStyle = tempColor(hotT);
+    roundRect(ctx, hotX, y0, blockW, blockH, 16); ctx.fill();
+    moveGroup(particlesHot, hotT);
+    particlesHot.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(hotX + p.x*blockW, y0 + p.y*blockH, 4, 0, 7);
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fill();
+    });
+
+    // sovuq blok
+    ctx.fillStyle = tempColor(coldT);
+    roundRect(ctx, coldX, y0, blockW, blockH, 16); ctx.fill();
+    moveGroup(particlesCold, coldT);
+    particlesCold.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(coldX + p.x*blockW, y0 + p.y*blockH, 4, 0, 7);
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fill();
+    });
+
+    // issiqlik oqimi strelkalari
+    if(touching && !done){
+      const midY = y0 + blockH/2;
+      for(let i=0;i<3;i++){
+        const ox = (Date.now()/300 + i*0.9)%3;
+        const ax = hotX + blockW + 4 + ox*6;
+        ctx.fillStyle = 'rgba(230,57,80,0.7)';
+        ctx.beginPath();
+        ctx.moveTo(ax, midY-8+i*10);
+        ctx.lineTo(ax+10, midY-3+i*10);
+        ctx.lineTo(ax, midY+2+i*10);
+        ctx.fill();
+      }
+    }
+
+    // labels
+    ctx.fillStyle = '#fff';
+    ctx.font = '600 13px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('ISSIQ', hotX+blockW/2, y0+18);
+    ctx.fillText('SOVUQ', coldX+blockW/2, y0+18);
+
+    requestAnimationFrame(draw);
+  }
+  updateReadout();
+  draw();
+})();
+
+/* =====================================================
+   TEST BO'LIMI
+===================================================== */
+const quizData = [
+  {
+    q: "1. Jismning vaqt o'tishi bilan boshqa jismlarga nisbatan o'rnini o'zgartirishi qanday ataladi?",
+    opts: ["Mexanik harakat", "Diffuziya", "Issiqlik almashinuvi", "Bug'lanish"],
+    correct: 0
+  },
+  {
+    q: "2. Jismni tezlatish yoki sekinlatish uchun nima kerak?",
+    opts: ["Rang", "Hajm", "Kuch", "Hid"],
+    correct: 2
+  },
+  {
+    q: "3. Gaz holatidagi molekulalar qanday harakatlanadi?",
+    opts: ["Umuman harakatlanmaydi", "Faqat titraydi", "Tez va tartibsiz harakatlanadi", "Bir joyda aylanadi"],
+    correct: 2
+  },
+  {
+    q: "4. Xonaga sepilgan atir hidining tarqalishiga nima misol bo'ladi?",
+    opts: ["Diffuziya", "Tortishish kuchi", "Issiqlik o'tkazuvchanlik", "Tezlanish"],
+    correct: 0
+  },
+  {
+    q: "5. Issiq choy stakani sovuq havoda qoldirilsa, issiqlik qaysi tomonga o'tadi?",
+    opts: ["Sovuqdan issiqqa", "Issiqdan sovuqqa", "Issiqlik umuman o'tmaydi", "Ikkala tomonga teng"],
+    correct: 1
+  }
+];
+
+const quizList = document.getElementById('quizList');
+const scoreBox = document.getElementById('scoreBox');
+let answered = 0, correctCount = 0;
+
+quizData.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'qcard';
+  const qtext = document.createElement('div');
+  qtext.className = 'qtext';
+  qtext.textContent = item.q;
+  card.appendChild(qtext);
+
+  const optsWrap = document.createElement('div');
+  optsWrap.className = 'opts';
+
+  item.opts.forEach((optText, oi)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = optText;
+    btn.addEventListener('click', ()=>{
+      const allOpts = optsWrap.querySelectorAll('.opt');
+      allOpts.forEach(o=> o.disabled = true);
+      if(oi === item.correct){
+        btn.classList.add('correct');
+        correctCount++;
+      } else {
+        btn.classList.add('wrong');
+        allOpts[item.correct].classList.add('correct');
+      }
+      answered++;
+      updateScore();
+    });
+    optsWrap.appendChild(btn);
+  });
+
+  card.appendChild(optsWrap);
+  quizList.appendChild(card);
+});
+
+function updateScore(){
+  if(answered === quizData.length){
+    scoreBox.textContent = `Natija: ${correctCount} / ${quizData.length} to'g'ri javob 🎉`;
+  } else {
+    scoreBox.textContent = `Javob berilgan savollar: ${answered} / ${quizData.length}`;
+  }
+}
+updateScore();
+</script>
+</body>
+</html>

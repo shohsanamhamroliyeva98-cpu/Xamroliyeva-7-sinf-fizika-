@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratoriya xavfsizligi — 7-sinf fizika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#152238; --navy2:#1e3358; --yellow:#FFC93C; --red:#E4572E;
+  --teal:#2A9D8F; --cream:#F7F4EC; --ink:#152238; --card:#ffffff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5}
+h1,h2,h3{font-family:'Poppins',sans-serif;margin:0 0 .4em}
+img{max-width:100%}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+header{background:var(--navy);color:#fff;padding:28px 16px 20px;text-align:center;
+  border-bottom:6px solid var(--yellow)}
+header h1{font-size:1.5rem}
+header p{opacity:.85;margin:0;font-size:.95rem}
+nav.tabs{position:sticky;top:0;z-index:5;display:flex;background:var(--navy2);
+  overflow-x:auto}
+nav.tabs button{flex:1;min-width:110px;background:none;border:none;color:#cdd7ea;
+  padding:12px 6px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.82rem;
+  cursor:pointer;border-bottom:4px solid transparent}
+nav.tabs button.active{color:#fff;border-color:var(--yellow)}
+section.part{display:none;padding-top:20px;animation:fade .4s ease}
+section.part.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border-radius:14px;padding:18px;margin:14px 0;
+  box-shadow:0 2px 10px rgba(21,34,56,.08)}
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.rule{background:#fff;border-radius:12px;padding:12px;text-align:center;
+  border:2px solid #eee2}
+.rule .emoji{font-size:1.8rem;display:block;margin-bottom:6px}
+.compare{display:flex;gap:10px;margin:14px 0}
+.compare .box{flex:1;border-radius:12px;padding:14px;text-align:center;cursor:pointer;
+  transition:transform .15s;border:3px solid transparent;font-size:.9rem}
+.compare .box:active{transform:scale(.97)}
+.compare .good{background:#e6f6f2;border-color:var(--teal)}
+.compare .bad{background:#fdeae4;border-color:var(--red)}
+.compare .box .big{font-size:2.2rem;display:block}
+.compare .result{display:none;margin-top:8px;font-weight:600}
+.compare .box.picked .result{display:block}
+.quiz{margin-top:10px}
+.q{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #eee}
+.q p.qtext{font-weight:600;margin:0 0 8px}
+.opt{display:block;width:100%;text-align:left;background:var(--cream);border:2px solid transparent;
+  border-radius:8px;padding:9px 12px;margin:6px 0;cursor:pointer;font-family:inherit;font-size:.92rem}
+.opt.correct{background:#d7f3e8;border-color:var(--teal)}
+.opt.wrong{background:#fbdcd3;border-color:var(--red)}
+.opt:disabled{cursor:default}
+.score{font-family:'Poppins';font-weight:700;color:var(--navy);margin-top:8px}
+.sim-steps{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.sim-steps button{background:var(--teal);color:#fff;border:none;border-radius:10px;
+  padding:10px;font-family:'Poppins';font-weight:600;cursor:pointer}
+.step-box{background:#fff;border-left:5px solid var(--teal);border-radius:8px;
+  padding:12px;margin-top:8px;display:none}
+.step-box.show{display:block;animation:fade .3s}
+.sign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.sign{background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+  border:2px solid #eee;cursor:pointer;font-size:.75rem}
+.sign .icon{font-size:1.9rem;display:block;margin-bottom:4px}
+.sign.selected{border-color:var(--yellow);background:#fff8e1}
+.match-wrap{display:flex;flex-direction:column;gap:14px;margin:10px 0}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-item{background:#fff;border:2px solid #ddd;border-radius:10px;padding:10px;
+  cursor:pointer;font-size:.88rem;text-align:center}
+.match-item.sel{border-color:var(--yellow);background:#fff8e1}
+.match-item.done{border-color:var(--teal);background:#e6f6f2;cursor:default}
+footer{text-align:center;color:#8a93a6;font-size:.8rem;padding:20px}
+.badge{display:inline-block;background:var(--yellow);color:var(--navy);font-weight:700;
+  border-radius:999px;padding:2px 10px;font-size:.75rem;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">7-SINF · FIZIKA</div>
+  <h1>Laboratoriya xonasida texnika xavfsizligi</h1>
+  <p>Bilim — himoya. Har bir qoida — sizning xavfsizligingiz uchun.</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" onclick="showPart(1,this)">1. Umumiy qoidalar</button>
+  <button onclick="showPart(2,this)">2. Elektr va kimyo</button>
+  <button onclick="showPart(3,this)">3. Ogohlantiruvchi belgilar</button>
+</nav>
+
+<div class="wrap">
+
+<!-- PART 1 -->
+<section class="part active" id="part1">
+  <div class="card">
+    <h2>🔬 Nega qoidalarga rioya qilish shart?</h2>
+    <p>Laboratoriya — qiziqarli tajribalar xonasi, lekin u o'yin maydonchasi emas. Bu yerda olov, elektr, shisha idishlar va ba'zan kimyoviy moddalar bo'ladi. Bitta e'tiborsizlik — kuyish, kesilish yoki boshqa jarohatga olib kelishi mumkin. Qoidalar seni jazolash uchun emas, balki <b>o'zingni va do'stlaringni asrash</b> uchun yaratilgan.</p>
+  </div>
+
+  <div class="card">
+    <h3>📋 Umumiy qoidalar</h3>
+    <div class="rule-grid">
+      <div class="rule"><span class="emoji">🥼</span>Maxsus xalat va himoya vositalarida ishlash</div>
+      <div class="rule"><span class="emoji">🙋</span>O'qituvchi ruxsatisiz asbob ishlatmaslik</div>
+      <div class="rule"><span class="emoji">🧹</span>Ish o'rnini toza va tartibli saqlash</div>
+      <div class="rule"><span class="emoji">🍎</span>Laboratoriyada ovqatlanmaslik va ichmaslik</div>
+      <div class="rule"><span class="emoji">🏃</span>Yugurmaslik, shovqin qilmaslik</div>
+      <div class="rule"><span class="emoji">👂</span>Xavf sodir bo'lsa, darhol o'qituvchiga aytish</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ To'g'ri va noto'g'ri xatti-harakat</h3>
+    <p>Har bir katakchani bosing va natijani ko'ring:</p>
+    <div class="compare">
+      <div class="box good" onclick="this.classList.add('picked')">
+        <span class="big">🙆‍♂️</span>
+        Qo'llarni yig'ib, o'qituvchi ko'rsatmasini kutish
+        <div class="result">✅ To'g'ri! Xavfsiz va tartibli.</div>
+      </div>
+      <div class="box bad" onclick="this.classList.add('picked')">
+        <span class="big">🙅‍♂️</span>
+        Ruxsatsiz probirkani qo'lga olib, silkitish
+        <div class="result">❌ Noto'g'ri! Sinishi yoki to'kilishi mumkin.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card quiz" id="quiz1">
+    <h3>✅ Bilimingizni tekshiring (1-qism)</h3>
+  </div>
+</section>
+
+<!-- PART 2 -->
+<section class="part" id="part2">
+  <div class="card">
+    <h2>⚡ Elektr asboblari bilan ishlash</h2>
+    <div class="rule-grid">
+      <div class="rule"><span class="emoji">🔌</span>Nam qo'l bilan rozetkaga tegmaslik</div>
+      <div class="rule"><span class="emoji">🧵</span>Simlar yorilgan bo'lsa ishlatmaslik</div>
+      <div class="rule"><span class="emoji">🔋</span>Asbobni ishlatishdan oldin tekshirish</div>
+      <div class="rule"><span class="emoji">🛑</span>Ish tugagach, tokdan uzish</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🧪 Kimyoviy moddalar bilan ishlash</h2>
+    <div class="rule-grid">
+      <div class="rule"><span class="emoji">🥽</span>Himoya ko'zoynagi taqish</div>
+      <div class="rule"><span class="emoji">👃</span>Moddani hidlash uchun qo'l bilan yelpish</div>
+      <div class="rule"><span class="emoji">🚫</span>Moddani tatib ko'rmaslik</div>
+      <div class="rule"><span class="emoji">💧</span>Kislota-suvni to'g'ri tartibda aralashtirish</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚑 Baxtsiz hodisa yuz bersa — nima qilish kerak?</h3>
+    <p>Tugmalarni ketma-ket bosib, to'g'ri harakatni ko'ring:</p>
+    <div class="sim-steps">
+      <button onclick="showStep('s1')">1-qadam: Elektr toki urdi</button>
+      <div class="step-box" id="s1">Darhol asbobni rozetkadan uzing (qo'l bilan emas, tugma orqali!) va o'qituvchini chaqiring.</div>
+      <button onclick="showStep('s2')">2-qadam: Kimyoviy modda terga tekkanda</button>
+      <div class="step-box" id="s2">Zararlangan joyni kamida 10-15 daqiqa toza suv bilan yuving va o'qituvchiga darhol xabar bering.</div>
+      <button onclick="showStep('s3')">3-qadam: Har qanday holatda</button>
+      <div class="step-box" id="s3">Vahima qilmang, o'zingiz davolashga urinmang — malakali yordam kelguncha o'qituvchi ko'rsatmasiga amal qiling.</div>
+    </div>
+  </div>
+
+  <div class="card quiz" id="quiz2">
+    <h3>✅ Bilimingizni tekshiring (2-qism)</h3>
+  </div>
+</section>
+
+<!-- PART 3 -->
+<section class="part" id="part3">
+  <div class="card">
+    <h2>⚠️ Xalqaro xavfsizlik belgilari</h2>
+    <p>Har bir piktogramma sizga moddaning xavfini oldindan aytadi:</p>
+    <div class="sign-grid" id="signGrid"></div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Belgini ma'nosi bilan mosla</h3>
+    <p>Chapdan belgini, o'ngdan mos ta'rifni tanlang.</p>
+    <div class="match-wrap">
+      <div class="match-col" id="matchLeft"></div>
+      <div class="match-col" id="matchRight"></div>
+    </div>
+    <p id="matchMsg" style="font-weight:600;color:var(--teal)"></p>
+  </div>
+
+  <div class="card quiz" id="quiz3">
+    <h3>✅ Bilimingizni tekshiring (3-qism)</h3>
+  </div>
+</section>
+
+</div>
+<footer>7-sinf fizika · Laboratoriya xavfsizligi darsi</footer>
+
+<script>
+function showPart(n,btn){
+  document.querySelectorAll('.part').forEach(p=>p.classList.remove('active'));
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showStep(id){document.getElementById(id).classList.toggle('show');}
+
+function buildQuiz(containerId, questions){
+  const c=document.getElementById(containerId);
+  let score=0, answered=0;
+  questions.forEach((q,qi)=>{
+    const div=document.createElement('div'); div.className='q';
+    const p=document.createElement('p'); p.className='qtext'; p.textContent=(qi+1)+'. '+q.q;
+    div.appendChild(p);
+    q.opts.forEach((opt,oi)=>{
+      const b=document.createElement('button'); b.className='opt'; b.textContent=opt;
+      b.onclick=()=>{
+        if(b.disabled) return;
+        div.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+        if(oi===q.correct){ b.classList.add('correct'); score++; }
+        else{
+          b.classList.add('wrong');
+          div.querySelectorAll('.opt')[q.correct].classList.add('correct');
+        }
+        answered++;
+        updateScore();
+      };
+      div.appendChild(b);
+    });
+    c.appendChild(div);
+  });
+  const scoreEl=document.createElement('p'); scoreEl.className='score'; c.appendChild(scoreEl);
+  function updateScore(){ scoreEl.textContent = 'Natija: '+score+' / '+questions.length+(answered===questions.length? ' 🎉':''); }
+}
+
+buildQuiz('quiz1',[
+ {q:"Laboratoriyaga kirganda birinchi nima qilish kerak?",opts:["Darhol asboblarni ushlab ko'rish","O'qituvchi ko'rsatmasini tinglash","Do'stlar bilan gaplashish","Telefon bilan band bo'lish"],correct:1},
+ {q:"Ruxsatsiz asbob ishlatish nimaga olib kelishi mumkin?",opts:["Hech nimaga","Jarohatga","Yaxshi natijaga","Baholarga"],correct:1},
+ {q:"Laboratoriyada ovqatlanish mumkinmi?",opts:["Ha, doim mumkin","Faqat tanaffusda","Yo'q, mumkin emas","Faqat shirinlik"],correct:2},
+ {q:"Ish o'rnini qanday saqlash kerak?",opts:["Toza va tartibli","Ahamiyatsiz","Har xil narsalar bilan to'la","Faqat oxirida tozalash"],correct:0},
+ {q:"Xavfli holat sodir bo'lsa nima qilish kerak?",opts:["Jim turish","Do'stga aytish","Darhol o'qituvchiga xabar berish","O'zi hal qilish"],correct:2}
+]);
+
+buildQuiz('quiz2',[
+ {q:"Nam qo'l bilan nimaga tegib bo'lmaydi?",opts:["Daftarga","Rozetkaga","Stulga","Kitobga"],correct:1},
+ {q:"Simi yorilgan asbobni ishlatish mumkinmi?",opts:["Ha","Yo'q","Faqat ehtiyotkorlik bilan","Faqat tez"],correct:1},
+ {q:"Ish tugagach, elektr asbobini nima qilish kerak?",opts:["Shunday qoldirish","Rozetkadan uzish","Uyga olib ketish","Sindirish"],correct:1},
+ {q:"Kimyoviy moddalar bilan ishlaganda nima taqish kerak?",opts:["Qo'lqop va ko'zoynak","Hech narsa","Shlyapa","Qo'lqop shart emas"],correct:0},
+ {q:"Moddani hidlash uchun to'g'ri usul qaysi?",opts:["Burun bilan yaqin hidlash","Qo'l bilan yelpib hidlash","Tatib ko'rish","Puflash"],correct:1},
+ {q:"Moddani tatib ko'rish mumkinmi?",opts:["Ha, ozgina","Yo'q, hech qachon","Faqat shirin bo'lsa","Faqat oxirida"],correct:1},
+ {q:"Elektr toki urganda birinchi harakat nima?",opts:["Odamni ushlab tortish","Asbobni rozetkadan uzish","Suv sepish","Kutib turish"],correct:1},
+ {q:"Kimyoviy modda teriga tekkanda nima qilish kerak?",opts:["Artib tashlash","Ko'p suv bilan yuvish","Kutish","Ustidan kiyim kiyish"],correct:1},
+ {q:"Baxtsiz hodisa yuz berganda kim chaqiriladi?",opts:["Do'st","O'qituvchi","Hech kim","Faqat ota-ona"],correct:1},
+ {q:"O'zingiz davolashga urinish kerakmi?",opts:["Ha, albatta","Yo'q, malakali yordam kutish kerak","Faqat internet orqali","Faqat kitobdan o'qib"],correct:1}
+]);
+
+buildQuiz('quiz3',[
+ {q:"Olov belgisi nimani anglatadi?",opts:["Yonuvchan modda","Sovuq modda","Yumshoq modda","Shirin modda"],correct:0},
+ {q:"Bosh suyagi belgisi nimani bildiradi?",opts:["Foydali modda","Zaharli modda","Yengil modda","Suyuq modda"],correct:1},
+ {q:"Korroziya belgisini ko'rsangiz, modda qanday?",opts:["Terini/materialni yeyuvchi","Xushbo'y","Yumshoq","Rangsiz"],correct:0},
+ {q:"Portlash belgisi qachon paydo bo'ladi?",opts:["Modda portlash xavfi bo'lsa","Modda sovuq bo'lsa","Modda shirin bo'lsa","Modda og'ir bo'lsa"],correct:0},
+ {q:"Ogohlantiruvchi belgini ko'rganda nima qilish kerak?",opts:["E'tibor bermaslik","Ehtiyot bo'lish va qoidaga amal qilish","Modda bilan o'ynash","Uni tashlab yuborish"],correct:1}
+]);
+
+// Warning signs
+const signs=[
+ {icon:'🔥',label:'Yonuvchan',mean:'Oson alangalanadi, olovdan uzoq tuting'},
+ {icon:'☠️',label:'Zaharli',mean:'Yutish yoki nafas olish xavfli'},
+ {icon:'🧪',label:'Korroziv',mean:'Terini va materialni yemiradi'},
+ {icon:'💥',label:'Portlovchi',label2:'',mean:'Zarba yoki issiqlikdan portlashi mumkin'},
+ {icon:'☢️',label:'Radioaktiv',mean:'Nurlanish xavfi bor'},
+ {icon:'⚡',label:'Elektr xavfi',mean:'Tok urishi mumkin'}
+];
+const grid=document.getElementById('signGrid');
+signs.forEach(s=>{
+  const d=document.createElement('div'); d.className='sign';
+  d.innerHTML='<span class="icon">'+s.icon+'</span>'+s.label;
+  grid.appendChild(d);
+});
+
+// Match game
+let selLeft=null, selRight=null, doneCount=0;
+const leftCol=document.getElementById('matchLeft');
+const rightCol=document.getElementById('matchRight');
+const shuffledRight=[...signs].sort(()=>Math.random()-0.5);
+signs.forEach((s,i)=>{
+  const l=document.createElement('div'); l.className='match-item'; l.dataset.id=i;
+  l.innerHTML=s.icon+' '+s.label;
+  l.onclick=()=>selectMatch(l,'left',i);
+  leftCol.appendChild(l);
+});
+shuffledRight.forEach(s=>{
+  const idx=signs.indexOf(s);
+  const r=document.createElement('div'); r.className='match-item'; r.dataset.id=idx;
+  r.textContent=s.mean;
+  r.onclick=()=>selectMatch(r,'right',idx);
+  rightCol.appendChild(r);
+});
+function selectMatch(el,side,id){
+  if(el.classList.contains('done')) return;
+  if(side==='left'){ if(selLeft) selLeft.classList.remove('sel'); selLeft=el; el.classList.add('sel'); }
+  else{ if(selRight) selRight.classList.remove('sel'); selRight=el; el.classList.add('sel'); }
+  if(selLeft && selRight){
+    if(selLeft.dataset.id===selRight.dataset.id){
+      selLeft.classList.add('done'); selRight.classList.add('done');
+      selLeft.classList.remove('sel'); selRight.classList.remove('sel');
+      doneCount++;
+      selLeft=null; selRight=null;
+      if(doneCount===signs.length){ document.getElementById('matchMsg').textContent='🎉 Barcha belgilar to\'g\'ri moslashtirildi!'; }
+    } else {
+      setTimeout(()=>{
+        if(selLeft) selLeft.classList.remove('sel');
+        if(selRight) selRight.classList.remove('sel');
+        selLeft=null; selRight=null;
+      },500);
+    }
+  }
+}
+</script>
+</body>
+</html>

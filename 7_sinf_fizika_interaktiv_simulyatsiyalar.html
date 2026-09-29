@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>7-sinf Fizika — Interaktiv simulyatsiyalar</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f7fb;color:#18212f}
+main{max-width:850px;margin:auto;padding:20px}
+h1{text-align:center}.sim{background:white;border-radius:16px;padding:18px;margin:16px 0;box-shadow:0 3px 12px #0001}
+.stage{height:190px;border:1px solid #d5dce5;border-radius:12px;background:#f9fbfd;position:relative;overflow:hidden;margin:12px 0}
+button{padding:11px 15px;margin:4px;border:0;border-radius:9px;background:#2867d8;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#64748b}.info{color:#536274;margin-top:10px}
+.car{position:absolute;left:15px;bottom:30px;font-size:42px}
+.ice,.lamp,.magnet{font-size:58px;position:absolute;left:45px;top:55px}.iron{font-size:42px;position:absolute;right:45px;top:65px}
+.ray{position:absolute;height:3px;background:#e9a400;transform-origin:left center}
+.wave{position:absolute;left:20px;right:20px;top:65px;font-size:58px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+<h1>🔬 7-sinf Fizika</h1>
+<p style="text-align:center"><b>“Fizika fani nimani o‘rganadi? Fizik hodisalar”</b><br>Interaktiv animatsiya va simulyatsiyalar</p>
+
+<section class="sim">
+<h2>1. Mexanik hodisa — harakat</h2>
+<p>Jismning vaqt davomida o‘z o‘rnini o‘zgartirishi mexanik hodisadir.</p>
+<div class="stage"><div class="car" id="car">🚗</div></div>
+<button onclick="startCar()">▶ Harakatni boshlash</button>
+<button class="secondary" onclick="resetCar()">↻ Qaytarish</button>
+<div class="info">Kuzating: mashina joyini o‘zgartirmoqda.</div>
+</section>
+
+<section class="sim">
+<h2>2. Issiqlik hodisasi — muzning erishi</h2>
+<p>Muz qizdirilganda erib, suyuq suvga aylanadi.</p>
+<div class="stage">
+<div class="ice" id="ice">🧊</div><div id="water" style="display:none;position:absolute;left:48px;top:65px;font-size:55px">💧</div>
+</div>
+<button onclick="melt()">🔥 Qizdirish</button>
+<button class="secondary" onclick="resetIce()">↻ Qaytarish</button>
+<div class="info" id="iceInfo">Qizdirishni boshlang.</div>
+</section>
+
+<section class="sim">
+<h2>3. Elektr hodisasi — elektr zanjiri</h2>
+<p>Zanjir yopilganda elektr toki o‘tadi va lampochka yonadi.</p>
+<div class="stage">
+<div class="lamp" id="lamp" style="filter:grayscale(1)">💡</div>
+<div style="position:absolute;left:150px;top:82px;font-size:34px">🔋 ─────────</div>
+</div>
+<button onclick="onLamp()">⚡ Zanjirni ulash</button>
+<button class="secondary" onclick="offLamp()">↻ Uzish</button>
+<div class="info" id="lampInfo">Zanjir hozir uzilgan.</div>
+</section>
+
+<section class="sim">
+<h2>4. Magnit hodisasi</h2>
+<p>Magnit ayrim temir buyumlarni o‘ziga tortadi.</p>
+<div class="stage"><div class="magnet" id="magnet">🧲</div><div class="iron" id="iron">🔩</div></div>
+<button onclick="pullMagnet()">🧲 Magnitni yaqinlashtirish</button>
+<button class="secondary" onclick="resetMagnet()">↻ Qaytarish</button>
+<div class="info">Magnit va temir buyum o‘rtasidagi tortishishni kuzating.</div>
+</section>
+
+<section class="sim">
+<h2>5. Yorug‘lik hodisasi — aks etish</h2>
+<p>Yorug‘lik sirtga tushib, undan qaytishi mumkin.</p>
+<div class="stage">
+<div style="font-size:48px;position:absolute;left:20px;top:55px">☀️</div>
+<div class="ray" id="ray1" style="left:100px;top:85px;width:125px;transform:rotate(25deg);opacity:0"></div>
+<div style="position:absolute;right:35px;top:20px;height:150px;border-left:5px solid #64748b"></div>
+<div class="ray" id="ray2" style="left:220px;top:138px;width:115px;transform:rotate(-25deg);opacity:0"></div>
+</div>
+<button onclick="lightOn()">☀️ Yorug‘likni yuborish</button>
+<div class="info">Tushgan va qaytgan nurlarni kuzating.</div>
+</section>
+
+<section class="sim">
+<h2>6. Tovush hodisasi — tebranish</h2>
+<p>Tebranayotgan jism tovush hosil qilishi mumkin.</p>
+<div class="stage"><div class="wave" id="wave">〰️〰️〰️</div></div>
+<button onclick="soundOn()">🔊 Tebranishni boshlash</button>
+<button class="secondary" onclick="soundOff()">↻ To‘xtatish</button>
+<div class="info">Tebranish natijasida tovush to‘lqinlari hosil bo‘ladi.</div>
+</section>
+
+<section class="sim">
+<h2>🎯 Tezkor tekshiruv</h2>
+<p>Qaysi hodisalar fizik hodisalarga kiradi?</p>
+<button onclick="answer()">Muzning erishi</button>
+<button onclick="answer()">Lampochkaning yonishi</button>
+<button onclick="answer()">Mashinaning harakatlanishi</button>
+<div class="info" id="answer"></div>
+</section>
+</main>
+
+<script>
+function startCar(){let c=document.getElementById('car');c.getAnimations().forEach(a=>a.cancel());c.animate([{transform:'translateX(0)'},{transform:'translateX(700px)'}],{duration:2200,iterations:Infinity,direction:'alternate'})}
+function resetCar(){let c=document.getElementById('car');c.getAnimations().forEach(a=>a.cancel());c.style.transform='translateX(0)'}
+function melt(){document.getElementById('ice').style.display='none';document.getElementById('water').style.display='block';document.getElementById('iceInfo').textContent='Muz eridi: qattiq holatdan suyuq holatga o‘tdi.'}
+function resetIce(){document.getElementById('ice').style.display='block';document.getElementById('water').style.display='none';document.getElementById('iceInfo').textContent='Qizdirishni boshlang.'}
+function onLamp(){document.getElementById('lamp').style.filter='brightness(1.8)';document.getElementById('lampInfo').textContent='Zanjir yopildi. Elektr toki o‘tdi va lampochka yondi.'}
+function offLamp(){document.getElementById('lamp').style.filter='grayscale(1)';document.getElementById('lampInfo').textContent='Zanjir uzildi. Tok o‘tmayapti.'}
+function pullMagnet(){document.getElementById('iron').animate([{transform:'translateX(0)'},{transform:'translateX(-180px)'}],{duration:1000,fill:'forwards'})}
+function resetMagnet(){let x=document.getElementById('iron');x.getAnimations().forEach(a=>a.cancel());x.style.transform='translateX(0)'}
+function lightOn(){document.getElementById('ray1').animate([{opacity:0},{opacity:1}],{duration:700,fill:'forwards'});document.getElementById('ray2').animate([{opacity:0},{opacity:1}],{duration:700,fill:'forwards'})}
+function soundOn(){document.getElementById('wave').animate([{transform:'scaleX(1)'},{transform:'scaleX(1.35)'},{transform:'scaleX(1)'}],{duration:500,iterations:Infinity})}
+function soundOff(){document.getElementById('wave').getAnimations().forEach(a=>a.cancel())}
+function answer(){document.getElementById('answer').textContent='✅ To‘g‘ri! Muzning erishi, lampochkaning yonishi va mashinaning harakatlanishi — fizik hodisalardir.'}
+</script>
+</body>
+</html>

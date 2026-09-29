@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fizika nimani o'rganadi? — 7-sinf</title>
+<style>
+:root{
+  --bg:#f4f7f5;
+  --ink:#1c2b2a;
+  --paper:#ffffff;
+  --mech:#2f6fed;
+  --mech-soft:#e7eefd;
+  --mol:#1f9d6b;
+  --mol-soft:#e4f7ee;
+  --thermo:#e0592a;
+  --thermo-soft:#fdeae0;
+  --line:#dfe4e2;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12201d; --ink:#eef3f1; --paper:#182b27; --line:#2a3f3a;
+    --mech-soft:#1c2c46; --mol-soft:#183a2c; --thermo-soft:#3a2416;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12201d; --ink:#eef3f1; --paper:#182b27; --line:#2a3f3a;
+  --mech-soft:#1c2c46; --mol-soft:#183a2c; --thermo-soft:#3a2416;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:"Fredoka","Nunito",sans-serif;
+  font-weight:600;
+  letter-spacing:.2px;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+img{max-width:100%;}
+
+/* HERO */
+.hero{
+  background:radial-gradient(circle at 20% -10%, var(--mech-soft), var(--bg) 55%);
+  padding:56px 0 40px;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.hero .wrap{display:flex;flex-direction:column;gap:18px;align-items:flex-start;}
+.eyebrow{
+  font-size:.95rem;
+  color:var(--mech);
+  font-weight:700;
+}
+.hero h1{
+  font-size:clamp(1.7rem,6vw,2.5rem);
+  line-height:1.15;
+  max-width:14ch;
+}
+.hero p{max-width:52ch;font-size:1.05rem;color:var(--ink);opacity:.85;}
+#heroCanvas{
+  width:100%;
+  height:150px;
+  border-radius:16px;
+  background:linear-gradient(180deg,#dfe9ff 0%,#f4f7f5 100%);
+  display:block;
+}
+:root[data-theme="dark"] #heroCanvas, :root:not([data-theme="light"]) #heroCanvas{background:linear-gradient(180deg,#1c2c46 0%,#12201d 100%);}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) #heroCanvas{background:linear-gradient(180deg,#dfe9ff 0%,#f4f7f5 100%);}}
+
+/* NAV DOTS */
+.sectionnav{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:10px 0;
+}
+.sectionnav .wrap{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;}
+.sectionnav a{
+  flex:0 0 auto;
+  font-size:.85rem;
+  font-weight:700;
+  padding:7px 13px;
+  border-radius:999px;
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--line);
+  white-space:nowrap;
+}
+.sectionnav a.mech{color:var(--mech);}
+.sectionnav a.mol{color:var(--mol);}
+.sectionnav a.thermo{color:var(--thermo);}
+
+/* SECTIONS */
+section{padding:44px 0;}
+section.intro{padding-top:36px;}
+.section-tag{
+  display:inline-block;
+  font-size:.8rem;
+  font-weight:800;
+  padding:4px 11px;
+  border-radius:999px;
+  margin-bottom:10px;
+}
+.tag-mech{background:var(--mech-soft);color:var(--mech);}
+.tag-mol{background:var(--mol-soft);color:var(--mol);}
+.tag-thermo{background:var(--thermo-soft);color:var(--thermo);}
+section h2{font-size:1.5rem;margin-bottom:10px;}
+section > .wrap > p.lead{font-size:1.02rem;opacity:.88;margin-bottom:22px;max-width:60ch;}
+
+/* CARD (simulation container) */
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:22px;
+}
+.card h3{font-size:1.12rem;margin-bottom:6px;}
+.card .example{font-size:.92rem;opacity:.78;margin-bottom:14px;}
+.card canvas{
+  width:100%;
+  display:block;
+  background:var(--bg);
+  border-radius:12px;
+  touch-action:none;
+}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px;}
+.controls label{font-size:.88rem;font-weight:700;display:flex;flex-direction:column;gap:4px;flex:1 1 150px;}
+input[type=range]{width:100%;accent-color:var(--mech);}
+.mol input[type=range]{accent-color:var(--mol);}
+.thermo-card input[type=range]{accent-color:var(--thermo);}
+button.btn{
+  border:none;
+  border-radius:10px;
+  padding:9px 16px;
+  font-weight:800;
+  font-size:.9rem;
+  cursor:pointer;
+  color:#fff;
+  background:var(--mech);
+}
+.mol .btn{background:var(--mol);}
+.thermo-card .btn{background:var(--thermo);}
+button.btn.secondary{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+.state-toggle{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.state-toggle button{
+  flex:1 1 90px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:8px;
+  font-weight:800;
+  font-size:.85rem;
+  cursor:pointer;
+  color:var(--ink);
+}
+.state-toggle button.active{background:var(--mol);color:#fff;border-color:var(--mol);}
+.readout{
+  font-size:.9rem;
+  font-weight:700;
+  margin-top:8px;
+  background:var(--bg);
+  border-radius:10px;
+  padding:8px 12px;
+  display:inline-block;
+}
+
+/* explanation box */
+.why{
+  margin-top:14px;
+  border-left:3px solid var(--mech);
+  background:var(--mech-soft);
+  border-radius:0 10px 10px 0;
+  padding:12px 14px;
+  font-size:.93rem;
+}
+.mol .why{border-color:var(--mol);background:var(--mol-soft);}
+.thermo-card .why{border-color:var(--thermo);background:var(--thermo-soft);}
+.why strong{display:block;margin-bottom:3px;}
+
+/* quiz */
+.quiz{
+  background:var(--paper);
+  border:1px dashed var(--line);
+  border-radius:18px;
+  padding:20px;
+}
+.quiz h3{font-size:1rem;margin-bottom:14px;}
+.q{margin-bottom:18px;}
+.q p{font-weight:700;margin-bottom:8px;font-size:.95rem;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 12px;
+  font-size:.9rem;
+  cursor:pointer;
+  background:var(--bg);
+}
+.opt.correct{background:#d7f3e3;border-color:var(--mol);color:#0d5c39;font-weight:700;}
+.opt.wrong{background:#fbe0da;border-color:var(--thermo);color:#8a2e0f;}
+
+footer{padding:40px 0 60px;text-align:center;font-size:.85rem;opacity:.6;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">7-sinf · Fizika</span>
+    <h1>Fizika fani nimani o'rganadi?</h1>
+    <p>Olma nega yerga tushadi? Muz nega eriydi? Bug' nega yuqoriga ko'tariladi? Shu kabi barcha savollarga javob beruvchi fan — fizika. Quyida buni o'zingiz sinab ko'rasiz.</p>
+    <canvas id="heroCanvas"></canvas>
+  </div>
+</header>
+
+<nav class="sectionnav">
+  <div class="wrap">
+    <a href="#kirish">Kirish</a>
+    <a href="#mexanik" class="mech">Mexanik hodisalar</a>
+    <a href="#molekular" class="mol">Molekulyar hodisalar</a>
+    <a href="#termo" class="thermo">Termodinamik hodisalar</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ KIRISH ============ -->
+<section class="intro" id="kirish">
+  <div class="wrap">
+    <h2>Fizika — bu nima?</h2>
+    <p class="lead">
+      <strong>Fizika</strong> — tabiatda sodir bo'ladigan hodisalarni, ya'ni jismlarning harakatini, ular orasidagi
+      o'zaro ta'sirni, issiqlik va sovuqlikni, yorug'lik va tovushni o'rganadigan fan. "Fizika" so'zi qadimgi yunon
+      tilidan olingan bo'lib, "tabiat" degan ma'noni bildiradi.
+    </p>
+    <p class="lead">
+      Siz har kuni fizik hodisalarni ko'rasiz: to'p yerga tushganda, choy sovuganda, muzlik erib suvga aylanganda —
+      bularning barchasi fizika. Bu darsda uchta katta guruhni birga o'rganamiz:
+      <strong style="color:var(--mech)">mexanik</strong>, <strong style="color:var(--mol)">molekulyar</strong> va
+      <strong style="color:var(--thermo)">termodinamik</strong> hodisalar. Har bir bo'limda o'zingiz slayder va
+      tugmalarni bosib, hodisani "jonlantirasiz".
+    </p>
+  </div>
+</section>
+
+<!-- ============ MEXANIK HODISALAR ============ -->
+<section id="mexanik">
+  <div class="wrap">
+    <span class="section-tag tag-mech">Mexanik hodisalar</span>
+    <h2>Jismlar qanday harakatlanadi?</h2>
+    <p class="lead">Mexanik hodisalar — jismlarning fazoda o'rnini o'zgartirishi bilan bog'liq hodisalar: harakat, kuch, tortishish va ishqalanish. Keling, ikkita tajribani o'zingiz boshqaring.</p>
+
+    <!-- Simulation 1: Free fall -->
+    <div class="card">
+      <h3>🍎 1-tajriba: Erkin tushish</h3>
+      <p class="example">Real hayotdan misol: daraxtdan uzilgan olma yerga tushganda aynan shu hodisa sodir bo'ladi — Yer tortish kuchi olmani o'ziga tortadi.</p>
+      <canvas id="fallCanvas" height="220"></canvas>
+      <div class="controls">
+        <label>Balandlik: <span id="fallHVal">5</span> m
+          <input type="range" id="fallH" min="2" max="10" value="5" step="1">
+        </label>
+        <button class="btn" id="fallStart">Tashla ▶</button>
+        <button class="btn secondary" id="fallReset">Qayta boshlash</button>
+      </div>
+      <div class="readout" id="fallReadout">Vaqt: 0.00 s · Tezlik: 0.0 m/s</div>
+      <div class="why">
+        <strong>Nima uchun bunday sodir bo'ladi?</strong>
+        Yer o'zining tortish kuchi bilan har bir jismni markaziga tomon tortadi. Shuning uchun tayanchsiz qolgan har qanday jism pastga qarab tushadi va uning tezligi vaqt o'tishi bilan ortib boradi.
+      </div>
+    </div>
+
+    <!-- Simulation 2: Pendulum -->
+    <div class="card">
+      <h3>⏱️ 2-tajriba: Mayatnik tebranishi</h3>
+      <p class="example">Real hayotdan misol: devor soatidagi mayatnik yoki bolalar o'yin maydonchasidagi arg'imchoq xuddi shu qonun bo'yicha tebranadi.</p>
+      <canvas id="pendCanvas" height="240"></canvas>
+      <div class="controls">
+        <label>Ip uzunligi: <span id="pendLVal">120</span> sm
+          <input type="range" id="pendL" min="60" max="200" value="120" step="10">
+        </label>
+        <button class="btn" id="pendToggle">To'xtatish ⏸</button>
+      </div>
+      <div class="why">
+        <strong>Nima uchun bunday sodir bo'ladi?</strong>
+        Tortish kuchi mayatnikni pastga tortadi, lekin ip uni aylana bo'ylab harakatlanishga majburlaydi. Natijada u tebranib turadi. Ip qancha uzun bo'lsa, mayatnik shuncha sekin tebranadi — buni slayderni siljitib tekshiring!
+      </div>
+    </div>
+
+    <div class="quiz" id="quizMech">
+      <h3>🧠 Bilimingizni tekshiring</h3>
+      <div class="q" data-answer="1">
+        <p>1. Olma daraxtdan yerga nega tushadi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Shamol uni pastga suradi</div>
+          <div class="opt" data-idx="1">Yer tortish kuchi ta'sirida</div>
+          <div class="opt" data-idx="2">Olma o'zi harakatlanadi</div>
+        </div>
+      </div>
+      <div class="q" data-answer="0">
+        <p>2. Ip uzunligi ortsa, mayatnikning tebranishi qanday o'zgaradi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Sekinlashadi</div>
+          <div class="opt" data-idx="1">Tezlashadi</div>
+          <div class="opt" data-idx="2">O'zgarmaydi</div>
+        </div>
+      </div>
+      <div class="q" data-answer="2">
+        <p>3. Quyidagilardan qaysi biri mexanik hodisaga misol bo'ladi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Choyning sovushi</div>
+          <div class="opt" data-idx="1">Muzning erishi</div>
+          <div class="opt" data-idx="2">Velosipedning harakatlanishi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOLEKULYAR HODISALAR ============ -->
+<section id="molekular">
+  <div class="wrap">
+    <span class="section-tag tag-mol">Molekulyar hodisalar</span>
+    <h2>Moddani tashkil qilgan zarrachalar</h2>
+    <p class="lead">Har qanday modda — qattiq, suyuq yoki gaz holatidagi — mayda zarrachalar, ya'ni molekulalardan tashkil topgan. Ular doim harakatda bo'ladi, faqat holatiga qarab har xil harakatlanadi.</p>
+
+    <div class="card mol">
+      <h3>🔬 Tajriba: Moddaning agregat holatlari</h3>
+      <p class="example">Real hayotdan misol: muz (qattiq) — suv (suyuq) — bug' (gaz). Uchalasi ham bir xil molekulalardan (H₂O) tuzilgan, farqi — molekulalarning harakatida!</p>
+      <div class="state-toggle">
+        <button data-state="solid" class="active">🧊 Qattiq jism</button>
+        <button data-state="liquid">💧 Suyuqlik</button>
+        <button data-state="gas">💨 Gaz</button>
+      </div>
+      <canvas id="molCanvas" height="220"></canvas>
+      <div class="controls">
+        <label>Harorat: <span id="tempVal">20</span> °C
+          <input type="range" id="tempSlider" min="-20" max="100" value="20" step="5">
+        </label>
+      </div>
+      <div class="readout" id="molReadout">Holat: Qattiq jism — molekulalar joyida tebranadi</div>
+      <div class="why">
+        <strong>Nima uchun bunday sodir bo'ladi?</strong>
+        Qattiq jismda molekulalar bir-biriga mahkam bog'langan va faqat joyida tebranadi. Suyuqlikda ular bir-biridan sirg'alib o'tishi mumkin. Gazda esa molekulalar bir-biridan uzoq va erkin, tez harakatlanadi. Haroratni oshirsangiz — istalgan holatda ham molekulalar tezroq harakatlana boshlaydi, chunki issiqlik ularga qo'shimcha energiya beradi.
+      </div>
+    </div>
+
+    <div class="quiz" id="quizMol">
+      <h3>🧠 Bilimingizni tekshiring</h3>
+      <div class="q" data-answer="2">
+        <p>1. Qaysi holatda molekulalar eng erkin va tez harakatlanadi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Qattiq jismda</div>
+          <div class="opt" data-idx="1">Suyuqlikda</div>
+          <div class="opt" data-idx="2">Gazda</div>
+        </div>
+      </div>
+      <div class="q" data-answer="1">
+        <p>2. Haroratni oshirsak, molekulalarning harakat tezligi qanday bo'ladi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Kamayadi</div>
+          <div class="opt" data-idx="1">Ortadi</div>
+          <div class="opt" data-idx="2">O'zgarmaydi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TERMODINAMIK HODISALAR ============ -->
+<section id="termo">
+  <div class="wrap">
+    <span class="section-tag tag-thermo">Termodinamik hodisalar</span>
+    <h2>Issiqlik jismlarga qanday ta'sir qiladi?</h2>
+    <p class="lead">Termodinamik hodisalar issiqlik almashinuvi bilan bog'liq: jismlar qizdirilganda kengayadi, sovutilganda esa siqiladi yoki holatini o'zgartiradi.</p>
+
+    <div class="card thermo-card">
+      <h3>🌡️ 1-tajriba: Qizdirishda kengayish</h3>
+      <p class="example">Real hayotdan misol: yozda temir relslar orasidagi tirqishlar shu sababdan qoldiriladi — issiqda temir kengayadi va agar joy bo'lmasa, rels egilib qolishi mumkin.</p>
+      <canvas id="expandCanvas" height="140"></canvas>
+      <div class="controls">
+        <label>Harorat: <span id="expTempVal">20</span> °C
+          <input type="range" id="expTemp" min="0" max="200" value="20" step="10">
+        </label>
+      </div>
+      <div class="why">
+        <strong>Nima uchun bunday sodir bo'ladi?</strong>
+        Qizdirilganda metal ichidagi molekulalar tezroq tebrana boshlaydi va bir-biridan "ko'proq joy" talab qiladi. Shu sababli metal cho'ziladi, ya'ni kengayadi. Sovuganda esa aksincha — siqiladi.
+      </div>
+    </div>
+
+    <div class="card thermo-card">
+      <h3>🧊➡️💧 2-tajriba: Muzning suvga aylanishi</h3>
+      <p class="example">Real hayotdan misol: muzlatgichdan olingan muzning stakanda erib, suvga aylanishi.</p>
+      <canvas id="meltCanvas" height="220"></canvas>
+      <div class="controls">
+        <button class="btn" id="meltStart">Qizdirish boshlash 🔥</button>
+        <button class="btn secondary" id="meltReset">Qayta boshlash</button>
+      </div>
+      <div class="readout" id="meltReadout">Harorat: -10 °C · Holat: Muz (qattiq)</div>
+      <div class="why">
+        <strong>Nima uchun bunday sodir bo'ladi?</strong>
+        Issiqlik muzga energiya beradi. Bu energiya molekulalarni tezroq tebrantiradi, ular orasidagi qattiq bog'lanish susayadi va 0°C da muz suvga aylanadi — bu jarayon <em>erish</em> deb ataladi.
+      </div>
+    </div>
+
+    <div class="quiz" id="quizThermo">
+      <h3>🧠 Bilimingizni tekshiring</h3>
+      <div class="q" data-answer="1">
+        <p>1. Temir relslar orasida tirqish qoldirilishining sababi nima?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Chiroyli ko'rinishi uchun</div>
+          <div class="opt" data-idx="1">Issiqda temir kengayishi uchun joy qoldirish</div>
+          <div class="opt" data-idx="2">Poyezd tovushini kamaytirish uchun</div>
+        </div>
+      </div>
+      <div class="q" data-answer="0">
+        <p>2. Muz qaysi haroratda erib, suvga aylana boshlaydi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">0 °C</div>
+          <div class="opt" data-idx="1">-10 °C</div>
+          <div class="opt" data-idx="2">50 °C</div>
+        </div>
+      </div>
+      <div class="q" data-answer="2">
+        <p>3. Muz erishi jarayonida molekulalarga nima bo'ladi?</p>
+        <div class="opts">
+          <div class="opt" data-idx="0">Ular butunlay to'xtaydi</div>
+          <div class="opt" data-idx="1">Ular yo'qoladi</div>
+          <div class="opt" data-idx="2">Ular tezroq harakatlana boshlaydi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>7-sinf fizika · Interaktiv dars materiali</footer>
+
+<script>
+// ---------- helpers ----------
+function fit(canvas){
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const h = parseInt(canvas.getAttribute('height')) || rect.height;
+  canvas.width = rect.width * ratio;
+  canvas.height = h * ratio;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  return {ctx, w:rect.width, h:h};
+}
+function cssVar(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+
+// ---------- HERO decorative canvas ----------
+(function(){
+  const canvas = document.getElementById('heroCanvas');
+  let dims = fit(canvas);
+  let particles = [];
+  function init(){
+    dims = fit(canvas);
+    particles = [];
+    for(let i=0;i<18;i++){
+      particles.push({
+        x: Math.random()*dims.w,
+        y: Math.random()*dims.h,
+        r: 3+Math.random()*5,
+        vy: 0.3+Math.random()*0.6,
+        vx: (Math.random()-0.5)*0.4
+      });
+    }
+  }
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = cssVar('--mech');
+    particles.forEach(p=>{
+      p.y += p.vy; p.x += p.vx;
+      if(p.y > h+10){p.y=-10; p.x=Math.random()*w;}
+      if(p.x<0) p.x=w; if(p.x>w) p.x=0;
+      ctx.globalAlpha = 0.55;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  init();
+  window.addEventListener('resize', init);
+  requestAnimationFrame(draw);
+})();
+
+// ---------- FREE FALL ----------
+(function(){
+  const canvas = document.getElementById('fallCanvas');
+  const hSlider = document.getElementById('fallH');
+  const hVal = document.getElementById('fallHVal');
+  const startBtn = document.getElementById('fallStart');
+  const resetBtn = document.getElementById('fallReset');
+  const readout = document.getElementById('fallReadout');
+  let dims = fit(canvas);
+  let running=false, t=0, g=9.8, H=5;
+  const groundPad = 20;
+
+  function heightToPixelScale(){
+    return (dims.h - groundPad*2) / H;
+  }
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    // ground
+    ctx.fillStyle = '#c7d6cf';
+    ctx.fillRect(0,h-groundPad,w,groundPad);
+    // scale marks
+    const scale = heightToPixelScale();
+    let fallen = 0.5*g*t*t;
+    if(fallen > H){ fallen = H; running=false; }
+    const y = (h-groundPad) - (H-fallen)*scale;
+    const x = w/2;
+    ctx.font = '13px Nunito, sans-serif';
+    ctx.fillStyle = '#6b7876';
+    ctx.fillText(H+' m', 10, 18);
+    // apple
+    ctx.beginPath();
+    ctx.fillStyle = '#e0592a';
+    ctx.arc(x, Math.max(10,y), 14, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#3a7d44';
+    ctx.fillRect(x-2, Math.max(10,y)-20, 4, 8);
+
+    const v = g*t;
+    readout.textContent = `Vaqt: ${t.toFixed(2)} s · Tezlik: ${(fallen>=H?v:v).toFixed(1)} m/s`;
+    if(running){
+      t += 0.02;
+      requestAnimationFrame(draw);
+    } else if(fallen>=H){
+      readout.textContent = `Yerga yetdi! Vaqt: ${t.toFixed(2)} s · Tezlik: ${v.toFixed(1)} m/s`;
+    }
+  }
+  function reset(){
+    running=false; t=0; H = parseFloat(hSlider.value);
+    draw();
+  }
+  hSlider.addEventListener('input', ()=>{ hVal.textContent = hSlider.value; if(!running) reset(); });
+  startBtn.addEventListener('click', ()=>{ if(running) return; H=parseFloat(hSlider.value); t=0; running=true; draw(); });
+  resetBtn.addEventListener('click', reset);
+  window.addEventListener('resize', ()=>{ dims = fit(canvas); draw(); });
+  dims = fit(canvas); reset();
+})();
+
+// ---------- PENDULUM ----------
+(function(){
+  const canvas = document.getElementById('pendCanvas');
+  const lSlider = document.getElementById('pendL');
+  const lVal = document.getElementById('pendLVal');
+  const toggleBtn = document.getElementById('pendToggle');
+  let dims = fit(canvas);
+  let angle = Math.PI/4, angVel=0, running=true;
+  let L = 120;
+
+  function period(){ return 2*Math.PI*Math.sqrt((L/100)/9.8); }
+
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    const pivotX = w/2, pivotY = 26;
+    const maxLenPx = h - 60;
+    const lenPx = Math.min(maxLenPx, (L/200)*maxLenPx + 40);
+
+    if(running){
+      const omega2 = 9.8/(L/100);
+      const angAcc = -omega2*Math.sin(angle);
+      angVel += angAcc*0.05;
+      angVel *= 0.999;
+      angle += angVel*0.05;
+    }
+    const bobX = pivotX + lenPx*Math.sin(angle);
+    const bobY = pivotY + lenPx*Math.cos(angle);
+
+    // support
+    ctx.strokeStyle = '#9aa8a5';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(pivotX-30,pivotY); ctx.lineTo(pivotX+30,pivotY); ctx.stroke();
+    // string
+    ctx.strokeStyle = '#6b7876';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(pivotX,pivotY); ctx.lineTo(bobX,bobY); ctx.stroke();
+    // bob
+    ctx.beginPath();
+    ctx.fillStyle = cssVar('--mech');
+    ctx.arc(bobX,bobY,16,0,Math.PI*2);
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+  }
+  lSlider.addEventListener('input', ()=>{
+    L = parseFloat(lSlider.value);
+    lVal.textContent = L;
+  });
+  toggleBtn.addEventListener('click', ()=>{
+    running = !running;
+    toggleBtn.textContent = running ? "To'xtatish ⏸" : "Davom ettirish ▶";
+  });
+  window.addEventListener('resize', ()=>{ dims = fit(canvas); });
+  dims = fit(canvas);
+  requestAnimationFrame(draw);
+})();
+
+// ---------- MOLECULAR STATES ----------
+(function(){
+  const canvas = document.getElementById('molCanvas');
+  const tempSlider = document.getElementById('tempSlider');
+  const tempVal = document.getElementById('tempVal');
+  const readout = document.getElementById('molReadout');
+  const stateBtns = document.querySelectorAll('.state-toggle button');
+  let dims = fit(canvas);
+  let state = 'solid';
+  let particles = [];
+  const N = 42;
+
+  function speedFactor(){
+    const temp = parseFloat(tempSlider.value);
+    return 0.4 + (temp+20)/120*1.6;
+  }
+
+  function initParticles(){
+    particles = [];
+    const {w,h} = dims;
+    if(state==='solid'){
+      const cols = 7, rows = 6;
+      const padX = w*0.15, padY = h*0.12;
+      const gx = (w-2*padX)/(cols-1), gy=(h-2*padY)/(rows-1);
+      for(let i=0;i<cols;i++) for(let j=0;j<rows;j++){
+        particles.push({ hx: padX+i*gx, hy: padY+j*gy, x:padX+i*gx, y:padY+j*gy, phase:Math.random()*Math.PI*2 });
+      }
+    } else {
+      for(let i=0;i<N;i++){
+        particles.push({
+          x: Math.random()*dims.w, y: Math.random()*dims.h,
+          vx:(Math.random()-0.5), vy:(Math.random()-0.5)
+        });
+      }
+    }
+  }
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = cssVar('--mol');
+    const f = speedFactor();
+
+    if(state==='solid'){
+      particles.forEach(p=>{
+        p.phase += 0.15*f;
+        const amp = 2+f*1.5;
+        p.x = p.hx + Math.sin(p.phase)*amp;
+        p.y = p.hy + Math.cos(p.phase*1.3)*amp;
+        ctx.beginPath(); ctx.arc(p.x,p.y,7,0,Math.PI*2); ctx.fill();
+      });
+    } else if(state==='liquid'){
+      particles.forEach(p=>{
+        p.x += p.vx*f; p.y += p.vy*f;
+        if(p.x<10||p.x>w-10) p.vx*=-1;
+        if(p.y<10||p.y>h-10) p.vy*=-1;
+        p.x = Math.max(10,Math.min(w-10,p.x));
+        p.y = Math.max(10,Math.min(h-10,p.y));
+        ctx.beginPath(); ctx.arc(p.x,p.y,6,0,Math.PI*2); ctx.fill();
+      });
+    } else { // gas
+      particles.forEach(p=>{
+        p.x += p.vx*f*2.2; p.y += p.vy*f*2.2;
+        if(p.x<6||p.x>w-6) p.vx*=-1;
+        if(p.y<6||p.y>h-6) p.vy*=-1;
+        p.x = Math.max(6,Math.min(w-6,p.x));
+        p.y = Math.max(6,Math.min(h-6,p.y));
+        ctx.beginPath(); ctx.arc(p.x,p.y,4.5,0,Math.PI*2); ctx.fill();
+      });
+    }
+    requestAnimationFrame(draw);
+  }
+  function updateReadout(){
+    const labels = {solid:'Qattiq jism — molekulalar joyida tebranadi',
+                     liquid:'Suyuqlik — molekulalar sirg\'alib harakatlanadi',
+                     gas:'Gaz — molekulalar erkin va tez uchadi'};
+    readout.textContent = 'Holat: ' + labels[state];
+  }
+  stateBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      stateBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state = btn.dataset.state;
+      initParticles();
+      updateReadout();
+    });
+  });
+  tempSlider.addEventListener('input', ()=>{ tempVal.textContent = tempSlider.value; });
+  window.addEventListener('resize', ()=>{ dims = fit(canvas); initParticles(); });
+  dims = fit(canvas); initParticles(); updateReadout();
+  requestAnimationFrame(draw);
+})();
+
+// ---------- THERMAL EXPANSION ----------
+(function(){
+  const canvas = document.getElementById('expandCanvas');
+  const tempSlider = document.getElementById('expTemp');
+  const tempVal = document.getElementById('expTempVal');
+  let dims = fit(canvas);
+
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    const temp = parseFloat(tempSlider.value);
+    const baseLen = w*0.5;
+    const extra = (temp/200)*w*0.35;
+    const len = baseLen+extra;
+    const x0 = (w-len)/2;
+    const y = h/2;
+    // ruler ticks background
+    ctx.strokeStyle = '#c7d6cf';
+    ctx.lineWidth=1;
+    for(let i=0;i<=10;i++){
+      const xx = w*0.05 + i*(w*0.9)/10;
+      ctx.beginPath(); ctx.moveTo(xx,y-30); ctx.lineTo(xx,y+30); ctx.stroke();
+    }
+    // rod, color shifts warmer with temp
+    const heat = Math.min(1, temp/200);
+    const r = Math.round(200 + heat*55);
+    const g = Math.round(120 - heat*80);
+    const b = Math.round(90 - heat*70);
+    ctx.fillStyle = `rgb(${r},${Math.max(20,g)},${Math.max(20,b)})`;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x0,y-14,len,28,8) : ctx.rect(x0,y-14,len,28);
+    ctx.fill();
+    ctx.font='13px Nunito, sans-serif';
+    ctx.fillStyle='#6b7876';
+    ctx.fillText('Uzunlik: '+len.toFixed(0)+' shartli birlik', x0, y+45);
+  }
+  tempSlider.addEventListener('input', ()=>{ tempVal.textContent = tempSlider.value; draw(); });
+  window.addEventListener('resize', ()=>{ dims=fit(canvas); draw(); });
+  dims = fit(canvas); draw();
+})();
+
+// ---------- ICE MELTING ----------
+(function(){
+  const canvas = document.getElementById('meltCanvas');
+  const startBtn = document.getElementById('meltStart');
+  const resetBtn = document.getElementById('meltReset');
+  const readout = document.getElementById('meltReadout');
+  let dims = fit(canvas);
+  let temp = -10, running=false, progress=0; // progress 0..1 melt amount
+
+  function stateLabel(){
+    if(temp<0) return 'Muz (qattiq)';
+    if(temp<100) return progress<1 ? 'Erimoqda → Suv (suyuq)' : 'Suv (suyuq)';
+    return "Bug'lanmoqda (gaz)";
+  }
+
+  function draw(){
+    const {ctx,w,h} = dims;
+    ctx.clearRect(0,0,w,h);
+    // container
+    const cw = w*0.5, ch = h*0.6, cx=(w-cw)/2, cy=h*0.3;
+    ctx.strokeStyle = '#9aa8a5'; ctx.lineWidth=2;
+    ctx.strokeRect(cx,cy,cw,ch);
+
+    // water fill (rises as ice melts)
+    const waterLevel = ch*0.35*progress;
+    ctx.fillStyle = 'rgba(90,150,220,0.45)';
+    ctx.fillRect(cx, cy+ch-waterLevel, cw, waterLevel);
+
+    // ice block shrinks
+    const iceH = ch*0.7*(1-progress*0.85);
+    const iceW = cw*0.75*(1-progress*0.5);
+    if(iceH>2 && temp<100){
+      ctx.fillStyle = 'rgba(190,225,245,0.9)';
+      ctx.fillRect(cx+(cw-iceW)/2, cy+ch-waterLevel-iceH, iceW, iceH);
+      ctx.strokeStyle='#9cc7e0';
+      ctx.strokeRect(cx+(cw-iceW)/2, cy+ch-waterLevel-iceH, iceW, iceH);
+    }
+
+    // heat flame indicator
+    if(running){
+      ctx.font='20px sans-serif';
+      ctx.fillText('🔥', cx+cw/2-10, cy+ch+28);
+    }
+
+    readout.textContent = `Harorat: ${temp.toFixed(0)} °C · Holat: ${stateLabel()}`;
+
+    if(running){
+      temp += 0.15;
+      if(temp>0 && progress<1){ progress += 0.004; }
+      if(temp>100){ temp=100; running=false; }
+      requestAnimationFrame(draw);
+    }
+  }
+  function reset(){
+    running=false; temp=-10; progress=0; draw();
+  }
+  startBtn.addEventListener('click', ()=>{ if(running) return; running=true; draw(); });
+  resetBtn.addEventListener('click', reset);
+  window.addEventListener('resize', ()=>{ dims=fit(canvas); draw(); });
+  dims = fit(canvas); reset();
+})();
+
+// ---------- QUIZZES ----------
+document.querySelectorAll('.quiz').forEach(quiz=>{
+  quiz.querySelectorAll('.q').forEach(q=>{
+    const correctIdx = parseInt(q.dataset.answer);
+    const opts = q.querySelectorAll('.opt');
+    opts.forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        if(opt.dataset.locked) return;
+        opts.forEach(o=>o.dataset.locked='1');
+        const idx = parseInt(opt.dataset.idx);
+        if(idx===correctIdx){
+          opt.classList.add('correct');
+        } else {
+          opt.classList.add('wrong');
+          opts[correctIdx].classList.add('correct');
+        }
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

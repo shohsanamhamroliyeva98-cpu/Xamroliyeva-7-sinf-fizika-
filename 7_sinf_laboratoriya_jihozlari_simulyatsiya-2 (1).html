@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-sinf fizika — Laboratoriya jihozlari va qurilmalar</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#1d4ed8;color:white;padding:22px;text-align:center}
+h1{margin:0;font-size:28px} h2{margin-top:0}
+.container{max-width:1100px;margin:auto;padding:18px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+button{border:1px solid #cbd5e1;background:white;border-radius:10px;padding:11px 15px;font-weight:bold;cursor:pointer}
+button:hover{background:#e0ecff}
+button.active{background:#2563eb;color:white}
+.section{display:none;background:white;border:1px solid #dbe3ee;border-radius:16px;padding:20px;box-shadow:0 4px 14px #0000000d}
+.section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{border:1px solid #dbe3ee;border-radius:14px;padding:15px;background:#fff}
+.icon{font-size:52px;text-align:center;margin:8px}
+.small{color:#64748b;font-size:14px}
+.sim{background:#f8fafc;border-radius:14px;padding:18px;margin-top:15px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+input[type=range]{width:280px}
+.menzurka{height:280px;width:120px;border:4px solid #475569;border-top:0;border-radius:0 0 20px 20px;margin:15px auto;position:relative;background:#fff}
+.water{position:absolute;bottom:0;left:0;right:0;background:#60a5fa88;border-radius:0 0 15px 15px}
+.menisk{position:absolute;left:7px;right:7px;height:9px;border-radius:50%;background:#3b82f6aa}
+.scale{position:absolute;right:-50px;top:0;height:100%;display:flex;flex-direction:column;justify-content:space-between;font-size:12px}
+.thermo{width:55px;height:240px;border:4px solid #475569;border-radius:30px;margin:15px auto;position:relative}
+.bulb{position:absolute;width:30px;height:30px;border-radius:50%;bottom:7px;left:9px;background:#ef4444}
+.mercury{position:absolute;width:12px;bottom:29px;left:18px;background:#ef4444;border-radius:10px}
+.ruler{height:75px;border:2px solid #475569;margin:25px 0;position:relative;background:repeating-linear-gradient(90deg,#fff 0 9px,#475569 9px 10px)}
+.ruler-label{text-align:center;margin-top:40px;font-size:13px}
+.balance{height:8px;width:240px;background:#475569;margin:70px auto 30px;position:relative}
+.pan{position:absolute;top:12px;width:85px;height:25px;border:2px solid #475569;border-radius:0 0 50px 50px}
+.left{left:0}.right{right:0}
+.stand{width:8px;height:110px;background:#475569;position:absolute;left:50%;top:-45px}
+.big{font-size:28px;font-weight:bold;text-align:center}
+.result{margin-top:12px;padding:12px;background:#e0f2fe;border-radius:10px}
+table{border-collapse:collapse;width:100%;margin-top:12px}
+th,td{border:1px solid #cbd5e1;padding:9px;text-align:left}
+th{background:#e0ecff}
+ol li{margin:8px 0}
+footer{text-align:center;padding:25px;color:#64748b}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🔬 Laboratoriya jihozlari va qurilmalar</h1>
+<p>7-sinf fizika — interaktiv animatsiya va simulyatsiya</p>
+</header>
+
+<div class="container">
+<div class="tabs">
+<button class="active" data-target="jihozlar">🔬 Jihozlar</button>
+<button data-target="menzurka">🥛 Menzurka</button>
+<button data-target="aniqlik">📏 O‘lchash aniqligi</button>
+<button data-target="termometr">🌡️ Termometr</button>
+<button data-target="tarozi">⚖️ Tarozi</button>
+<button data-target="sekundomer">⏱️ Sekundomer</button>
+<button data-target="test">🧠 Tezkor test</button>
+</div>
+
+<section id="jihozlar" class="section active">
+<h2>1. Laboratoriya jihozlari</h2>
+<div class="grid">
+<div class="card"><div class="icon">🧪</div><h3>Probirka</h3><p>Kichik miqdordagi moddalar bilan tajriba qilish uchun ishlatiladi.</p></div>
+<div class="card"><div class="icon">⚗️</div><h3>Kolba</h3><p>Suyuqliklarni saqlash, aralashtirish va tajribalar uchun.</p></div>
+<div class="card"><div class="icon">🥛</div><h3>Menzurka</h3><p>Suyuqlik hajmini o‘lchaydi.</p></div>
+<div class="card"><div class="icon">🌡️</div><h3>Termometr</h3><p>Haroratni o‘lchaydi.</p></div>
+<div class="card"><div class="icon">⚖️</div><h3>Tarozi</h3><p>Massani o‘lchaydi.</p></div>
+<div class="card"><div class="icon">↕️</div><h3>Dinamometr</h3><p>Kuchni nyutonda (N) o‘lchaydi.</p></div>
+<div class="card"><div class="icon">⏱️</div><h3>Sekundomer</h3><p>Vaqt oralig‘ini sekundlarda o‘lchaydi.</p></div>
+<div class="card"><div class="icon">🔩</div><h3>Shtativ</h3><p>Jihozlarni mahkamlab ushlab turadi.</p></div>
+<div class="card"><div class="icon">🔻</div><h3>Voronka</h3><p>Suyuqlikni bir idishdan boshqasiga quyishni osonlashtiradi.</p></div>
+<div class="card"><div class="icon">💧</div><h3>Pipetka</h3><p>Kichik miqdordagi suyuqlikni olish yoki ko‘chirish uchun.</p></div>
+</div>
+<div class="result"><b>Eslab qoling:</b> avval qanday fizik kattalikni o‘lchashingizni aniqlang, keyin mos asbobni tanlang.</div>
+</section>
+
+<section id="menzurka" class="section">
+<h2>2. Suyuqlik hajmini o‘lchash simulyatsiyasi</h2>
+<p>Suyuqlik hajmini menzurka yordamida o‘lchaymiz. Suv kabi suyuqliklarda meniskning pastki qismi o‘qiladi.</p>
+<div class="sim">
+<div class="menzurka">
+<div id="water" class="water" style="height:50%"></div>
+<div id="menisk" class="menisk" style="bottom:50%"></div>
+<div class="scale"><span>100 ml</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span></div>
+</div>
+<div class="big"><span id="volume">50</span> ml</div>
+<div class="controls">
+<label>Hajm:</label>
+<input id="volumeRange" type="range" min="0" max="100" value="50">
+<button id="readVolume">📖 O‘lchovni o‘qish</button>
+</div>
+<div id="volumeResult" class="result">Menzurkani tekis qo‘ying va ko‘zingizni menisk bilan bir balandlikda tuting.</div>
+</div>
+<h3>Amaliy qoida</h3>
+<ol>
+<li>Menzurkani tekis yuzaga qo‘ying.</li>
+<li>Suyuqlikni quying.</li>
+<li>Ko‘zni menisk bilan bir balandlikka keltiring.</li>
+<li>Meniskning pastki qismidan qiymatni o‘qing.</li>
+<li>Natijani birlik bilan yozing.</li>
+</ol>
+</section>
+
+<section id="aniqlik" class="section">
+<h2>3. O‘lchash aniqligi va bo‘linma qiymati</h2>
+<p><b>Bo‘linma qiymati</b> — shkaladagi qo‘shni belgilar orasidagi qiymat.</p>
+<div class="card">
+<h3>📏 Chizg‘ich animatsiyasi</h3>
+<div class="ruler"></div>
+<p><b>Misol:</b> 0 cm dan 1 cm gacha 10 ta bo‘linma bo‘lsa:</p>
+<div class="result">C = (1 − 0) / 10 = 0,1 cm = <b>1 mm</b></div>
+</div>
+<table>
+<tr><th>Asbob</th><th>O‘lchaydigan kattalik</th><th>Birlik</th></tr>
+<tr><td>Chizg‘ich</td><td>Uzunlik</td><td>m, cm, mm</td></tr>
+<tr><td>Tarozi</td><td>Massa</td><td>kg, g</td></tr>
+<tr><td>Termometr</td><td>Harorat</td><td>°C, K</td></tr>
+<tr><td>Menzurka</td><td>Hajm</td><td>ml, cm³, l, m³</td></tr>
+<tr><td>Dinamometr</td><td>Kuch</td><td>N</td></tr>
+<tr><td>Sekundomer</td><td>Vaqt</td><td>s</td></tr>
+</table>
+</section>
+
+<section id="termometr" class="section">
+<h2>4. Termometr simulyatsiyasi</h2>
+<div class="sim">
+<div class="thermo">
+<div id="mercury" class="mercury" style="height:105px"></div>
+<div class="bulb"></div>
+</div>
+<div class="big"><span id="temp">25</span> °C</div>
+<div class="controls">
+<label>Harorat:</label>
+<input id="tempRange" type="range" min="0" max="50" value="25">
+</div>
+<div class="result">Termometr haroratni o‘lchaydi. O‘lchash natijasi birlik bilan yoziladi, masalan: <b>25 °C</b>.</div>
+</div>
+</section>
+
+<section id="tarozi" class="section">
+<h2>5. Massa o‘lchash simulyatsiyasi</h2>
+<div class="sim">
+<div style="position:relative;height:220px">
+<div class="stand"></div>
+<div class="balance">
+<div class="pan left"></div>
+<div class="pan right"></div>
+</div>
+</div>
+<div class="big"><span id="mass">500</span> g = <span id="kg">0.50</span> kg</div>
+<input id="massRange" type="range" min="0" max="1000" value="500" step="10">
+<p class="result">Tarozi yordamida jism massasi aniqlanadi. SI birligi — kilogramm (kg).</p>
+</div>
+</section>
+
+<section id="sekundomer" class="section">
+<h2>6. Sekundomer animatsiyasi</h2>
+<div class="sim">
+<div class="big" id="clock">0.0 s</div>
+<div class="controls" style="justify-content:center">
+<button id="start">▶ Boshlash</button>
+<button id="stop">⏸ To‘xtatish</button>
+<button id="reset">↺ Nolga qaytarish</button>
+</div>
+<div class="result">Sekundomer vaqt oralig‘ini o‘lchaydi. Vaqtning SI birligi — sekund (s).</div>
+</div>
+</section>
+
+<section id="test" class="section">
+<h2>7. Tezkor interaktiv test</h2>
+<div id="quiz"></div>
+<button id="next">Keyingi savol →</button>
+<div id="score" class="result" style="display:none"></div>
+</section>
+</div>
+
+<footer>
+<b>7-sinf fizika</b> • Laboratoriya jihozlari va qurilmalar<br>
+O‘lchashda: <b>asbobni tanla → to‘g‘ri joylashtir → shkalani o‘qi → birlikni yoz.</b>
+</footer>
+
+<script>
+const buttons=document.querySelectorAll('.tabs button');
+const sections=document.querySelectorAll('.section');
+buttons.forEach(b=>b.addEventListener('click',()=>{
+ buttons.forEach(x=>x.classList.remove('active')); b.classList.add('active');
+ sections.forEach(s=>s.classList.remove('active'));
+ document.getElementById(b.dataset.target).classList.add('active');
+}));
+
+const vr=document.getElementById('volumeRange');
+vr.addEventListener('input',()=>{
+ const v=Number(vr.value);
+ document.getElementById('volume').textContent=v;
+ document.getElementById('water').style.height=v+'%';
+ document.getElementById('menisk').style.bottom=v+'%';
+});
+document.getElementById('readVolume').addEventListener('click',()=>{
+ const v=vr.value;
+ document.getElementById('volumeResult').innerHTML='O‘lchangan hajm: <b>'+v+' ml = '+v+' cm³</b>. Meniskning pastki qismi bo‘yicha o‘qildi.';
+});
+
+const tr=document.getElementById('tempRange');
+tr.addEventListener('input',()=>{
+ const v=Number(tr.value);
+ document.getElementById('temp').textContent=v;
+ document.getElementById('mercury').style.height=(25+v*4)+'px';
+});
+
+const mr=document.getElementById('massRange');
+mr.addEventListener('input',()=>{
+ const v=Number(mr.value);
+ document.getElementById('mass').textContent=v;
+ document.getElementById('kg').textContent=(v/1000).toFixed(2);
+});
+
+let timer=0,startTime=0,animation=null;
+function tick(){
+ timer=(performance.now()-startTime)/1000;
+ document.getElementById('clock').textContent=timer.toFixed(1)+' s';
+ animation=requestAnimationFrame(tick);
+}
+document.getElementById('start').onclick=()=>{
+ if(!animation){startTime=performance.now()-timer*1000;animation=requestAnimationFrame(tick)}
+};
+document.getElementById('stop').onclick=()=>{
+ if(animation){cancelAnimationFrame(animation);animation=null}
+};
+document.getElementById('reset').onclick=()=>{
+ if(animation)cancelAnimationFrame(animation);
+ animation=null;timer=0;document.getElementById('clock').textContent='0.0 s';
+};
+
+const questions=[
+['Suyuqlik hajmini qaysi asbob bilan o‘lchaymiz?',['Menzurka','Dinamometr','Termometr'],'Menzurka'],
+['Kuchning SI birligi nima?',['Nyuton','Kilogramm','Sekund'],'Nyuton'],
+['Massani qaysi asbob o‘lchaydi?',['Tarozi','Termometr','Sekundomer'],'Tarozi'],
+['Vaqtni qaysi asbob o‘lchaydi?',['Sekundomer','Menzurka','Dinamometr'],'Sekundomer'],
+['Haroratni qaysi asbob o‘lchaydi?',['Termometr','Tarozi','Chizg‘ich'],'Termometr']
+];
+let qi=0,score=0;
+function showQuestion(){
+ const q=questions[qi];
+ document.getElementById('quiz').innerHTML='<div class="card"><h3>'+ (qi+1)+'. '+q[0]+'</h3>'+
+ q[1].map((x,i)=>'<button class="answer" data-answer="'+x+'">'+x+'</button>').join(' ')+'</div>';
+ document.querySelectorAll('.answer').forEach(a=>a.onclick=()=>{
+  document.querySelectorAll('.answer').forEach(x=>x.disabled=true);
+  if(a.dataset.answer===q[2]){score++;a.style.background='#bbf7d0'}else{a.style.background='#fecaca'}
+ });
+}
+showQuestion();
+document.getElementById('next').onclick=()=>{
+ if(qi<questions.length-1){qi++;showQuestion()}
+ else{document.getElementById('score').style.display='block';document.getElementById('score').innerHTML='<b>Natija:</b> '+score+' / '+questions.length+' ta to‘g‘ri javob.';document.getElementById('next').disabled=true}
+};
+</script>
+</body>
+</html>
